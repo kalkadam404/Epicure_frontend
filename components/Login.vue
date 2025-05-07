@@ -11,20 +11,20 @@
     <div>
       <div class="text-2xl font-bold">Вход в аккаунт</div>
       <p class="text-gray-500">
-        Введите ваш email и пароль для входа в систему
+        Введите ваш номер телефона и пароль для входа в систему
       </p>
     </div>
     <form @submit.prevent="login" class="w-full flex flex-col gap-4">
       <div>
         <label for="username" class="block text-gray-700 font-medium"
-          >Имя пользователя</label
+          >Номер телефона</label
         >
         <input
-          v-model="username"
+          v-model="phone_number"
           type="text"
           id="username"
           required
-          placeholder="Введите ваш username"
+          placeholder="+7 (___) ___-__-__"
           class="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
         />
       </div>
@@ -74,7 +74,7 @@
       <span
         class="ml-2 text-black font-semibold cursor-pointer"
         @click="$emit('toggleToRegister')"
-        >Зарегистрироваться</span
+        >Зарегистрируйтесь</span
       >
     </div>
   </div>
@@ -83,23 +83,25 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
-import { useRouter } from "vue-router";
 const emit = defineEmits(["closeLoginModal", "toggleToRegister"]);
 
-const username = ref("");
+const phone_number = ref("");
 const password = ref("");
 
 const userStore = useUserStore();
 
 const login = async () => {
   try {
-    const response = await axios.post("http://127.0.0.1:8000/auth/token/", {
-      username: username.value,
-      password: password.value,
-    });
+    const response = await axios.post(
+      "http://0.0.0.0:8000/api/v1/users/token/obtain/",
+      {
+        phone_number: phone_number.value,
+        password: password.value,
+      }
+    );
 
     const accessToken = response.data.access;
-    userStore.login(username.value, accessToken); // авторизация через store
+    userStore.login(phone_number.value, accessToken); // авторизация через store
 
     emit("closeLoginModal"); // закрываем модалку
   } catch (error) {

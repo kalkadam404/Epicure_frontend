@@ -6,11 +6,11 @@
       <!-- Logo -->
       <div class="flex items-center gap-3">
         <img
-          src="../assets/ep_suitcase.svg"
+          src="../assets/logo.svg"
           class="w-6 h-6 md:w-7 md:h-7"
           alt="logo"
         />
-        <span class="text-xl font-semibold text-gray-800">JumysTap</span>
+        <span class="text-xl font-semibold text-gray-800">Epicure</span>
       </div>
 
       <!-- Nav (Desktop) -->
@@ -37,7 +37,7 @@
       <div
         class="hover:text-black transition-all duration-200 text-[12px] font-medium text-gray-700"
       >
-        © 2025 JumysTap. Все права защищены.
+        © 2025 Epicure. Все права защищены.
       </div>
     </div>
   </footer>

@@ -4,35 +4,42 @@ import axios from "axios";
 
 export const useUserStore = defineStore("user", () => {
   const isLoggedIn = ref(false);
-  const username = ref("");
+  const phone_number = ref("");
   const token = ref("");
 
   const login = (name, accessToken) => {
     isLoggedIn.value = true;
-    username.value = name;
+    phone_number.value = name;
     token.value = accessToken;
 
-    localStorage.setItem("username", name);
+    localStorage.setItem("phone_number", name);
     localStorage.setItem("access_token", accessToken);
   };
 
   const logout = () => {
     isLoggedIn.value = false;
-    username.value = "";
+    phone_number.value = "";
     token.value = "";
-    localStorage.removeItem("username");
+    localStorage.removeItem("phone_number");
     localStorage.removeItem("access_token");
   };
 
-  const register = async (username, email, password, role) => {
+  const register = async (
+    phone_number,
+    name,
+    email,
+    password,
+    password_confirm
+  ) => {
     try {
       const response = await axios.post(
         "http://0.0.0.0:8000/api/v1/users/register/",
         {
-          username,
+          phone_number,
+          name,
           email,
           password,
-          role,
+          password_confirm,
         }
       );
       // console.log("Registration successful:", response.data);
@@ -50,18 +57,18 @@ export const useUserStore = defineStore("user", () => {
 
   const initialize = () => {
     const savedToken = localStorage.getItem("access_token");
-    const savedUsername = localStorage.getItem("username");
+    const savedUsername = localStorage.getItem("phone_number");
 
     if (savedToken && savedUsername) {
       isLoggedIn.value = true;
-      username.value = savedUsername;
+      phone_number.value = savedUsername;
       token.value = savedToken;
     }
   };
 
   return {
     isLoggedIn,
-    username,
+    phone_number,
     token,
     login,
     register,

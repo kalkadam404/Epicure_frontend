@@ -5,37 +5,33 @@
     >
       <!-- Logo -->
       <NuxtLink to="/" class="flex items-center gap-3">
-        <img
-          src="../assets/logo.svg"
-          class="w-6 h-6 md:w-7 md:h-7"
-          alt="logo"
-        />
+        <img src="../assets/logo.svg" class="w-[70px] h-[70px]" alt="logo" />
         <span class="text-2xl font-bold text-gray-800">Epicure</span>
       </NuxtLink>
 
       <!-- Nav (Desktop) -->
       <nav class="hidden md:flex items-center gap-8 text-gray-700">
         <NuxtLink
-          to="/VacancyList"
-          class="hover:text-black transition-all duration-200 text-base font-medium"
+          href="#"
+          class="hover:text-black transition-all duration-200 text-lg font-medium"
         >
-        Меню
-        </NuxtLink>
-        <NuxtLink
-          to="/Analysis"
-          class="hover:text-black transition-all duration-200 text-base font-medium"
-        >
-        Бронирование
+          Меню
         </NuxtLink>
         <NuxtLink
           href="#"
-          class="hover:text-black transition-all duration-200 text-base font-medium"
+          class="hover:text-black transition-all duration-200 text-lg font-medium"
         >
-        Пакет
+          Бронирование
         </NuxtLink>
         <NuxtLink
           href="#"
-          class="hover:text-black transition-all duration-200 text-base font-medium"
+          class="hover:text-black transition-all duration-200 text-lg font-medium"
+        >
+          Пакет
+        </NuxtLink>
+        <NuxtLink
+          href="#"
+          class="hover:text-black transition-all duration-200 text-lg font-medium"
         >
           О нас
         </NuxtLink>
@@ -60,7 +56,7 @@
       <div class="flex items-center gap-4" v-else>
         <img src="../assets/user.png" alt="" class="w-12 h-12 rounded-full" />
         <NuxtLink to="/Profile" class="font-medium text-lg">{{
-          userStore.username
+          userStore.phone_number
         }}</NuxtLink>
         <button
           @click="userStore.logout"

@@ -15,14 +15,14 @@
     <form @submit.prevent="register" class="w-full flex flex-col gap-4">
       <div>
         <label for="username" class="block text-gray-700 font-medium"
-          >Имя пользователя</label
+          >Номер телефона *</label
         >
         <input
-          v-model="username"
+          v-model="phone_number"
           type="text"
           id="username"
           required
-          placeholder="Придумайте имя пользователя"
+          placeholder="+7 (___) ___-__-__"
           class="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
         />
       </div>
@@ -37,19 +37,21 @@
         />
       </div>
       <div>
-        <label for="username" class="block text-gray-700 font-medium"
-          >Тип пользователя</label
-        >
-        <select v-model="role" class="border p-2 w-full rounded">
-          <option value="job_seeker">Соискатель</option>
-          <option value="recruiter">Работодатель</option>
-        </select>
+        <label class="block text-gray-700 font-medium">Имя</label>
+        <input
+          v-model="name"
+          type="text"
+          id="name"
+          required
+          placeholder="Введите ваше имя"
+          class="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
+        />
       </div>
 
       <div>
         <div class="flex justify-between items-center">
           <label for="password" class="block text-gray-700 font-medium"
-            >Пароль</label
+            >Пароль *</label
           >
         </div>
         <div class="relative mt-2">
@@ -59,6 +61,24 @@
             id="password"
             required
             placeholder="Введите ваш пароль"
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
+          />
+        </div>
+      </div>
+
+      <div>
+        <div class="flex justify-between items-center">
+          <label for="password" class="block text-gray-700 font-medium"
+            >Подтверждение пароля *</label
+          >
+        </div>
+        <div class="relative mt-2">
+          <input
+            v-model="password_confirm"
+            type="password"
+            id="password_confirm"
+            required
+            placeholder="Подтвердите ваш пароль"
             class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
           />
         </div>
@@ -103,10 +123,11 @@ const emit = defineEmits([
   "openLoginModal",
 ]);
 
-const username = ref("");
+const phone_number = ref("");
+const name = ref("");
 const email = ref("");
 const password = ref("");
-const role = ref("job_seeker");
+const password_confirm = ref("");
 const error = ref(null);
 const success = ref(false);
 
@@ -116,19 +137,20 @@ const register = async () => {
 
   try {
     await userStore.register(
-      username.value,
+      phone_number.value,
+      name.value,
       email.value,
       password.value,
-      role.value
+      password_confirm.value
     );
     success.value = true;
   } catch (err) {
     console.error("Registration error:", err);
     error.value =
-      err?.username?.[0] ||
+      err?.phone_number?.[0] ||
       err?.email?.[0] ||
       err?.password?.[0] ||
-      err?.role?.[0] ||
+      err?.name?.[0] ||
       "Ошибка регистрации";
   }
   emit("closeRegisterModal");

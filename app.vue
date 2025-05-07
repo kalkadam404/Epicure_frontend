@@ -19,11 +19,12 @@ const toggleToRegister = () => {
 
 <template>
   <div>
-    <Header2
+    <Header
       @openLoginModal="openLoginModal"
       @toggleToRegister="toggleToRegister"
     />
     <NuxtPage />
+    <!-- <Footer /> -->
 
     <transition name="fade">
       <div
