@@ -3,6 +3,10 @@ import dish1 from "../assets/dish1.png";
 import dish2 from "../assets/dish2.png";
 import dish3 from "../assets/dish3.png";
 import dish4 from "../assets/dish4.png";
+
+import { inject } from "vue";
+
+const { openDishInfoModal } = inject("dishInfoModal");
 const dishList = ref([
   {
     img: dish1,
@@ -59,6 +63,7 @@ const dishList = ref([
 
     <div class="grid grid-cols-4 gap-8 mt-10">
       <DishCard
+        @click="openDishInfoModal"
         v-for="(dish, index) in dishList"
         :key="index"
         :img="dish.img"

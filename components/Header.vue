@@ -1,5 +1,5 @@
 <template>
-  <header class="sticky top-0 z-50 w-full backdrop-blur bg-white/80 px-20">
+  <header class="fixed top-0 z-50 w-full backdrop-blur bg-white/80 px-20">
     <div
       class="container mx-auto flex items-center justify-between px-4 md:px-6 py-4"
     >
@@ -12,7 +12,7 @@
       <!-- Nav (Desktop) -->
       <nav class="hidden md:flex items-center gap-8 text-gray-700">
         <NuxtLink
-          href="#"
+          to="/Menu"
           class="hover:text-black transition-all duration-200 text-lg font-medium"
         >
           Меню

@@ -3,5 +3,6 @@
     <Banner />
     <RestaurantList />
     <DishList />
+    <BonusAppPromo />
   </div>
 </template>

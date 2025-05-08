@@ -6,7 +6,6 @@ import res3 from "../assets/res3.png";
 import { inject } from "vue";
 
 const { openCityModal } = inject("cityModal");
-
 const restaurants = ref([
   {
     img: res1,

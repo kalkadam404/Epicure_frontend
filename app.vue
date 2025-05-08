@@ -3,6 +3,7 @@ const isLoginModalVisible = ref(false);
 const isRegisterModalVisible = ref(false);
 const isBookModalOpen = ref(false);
 const isCityModalOpen = ref(false);
+const isDishInfoModalOpen = ref(false);
 
 import { provide } from "vue";
 
@@ -34,10 +35,23 @@ const closeCityModal = () => {
   isCityModalOpen.value = false;
 };
 
+const openDishInfoModal = () => {
+  isDishInfoModalOpen.value = true;
+};
+const closeDishInfoModal = () => {
+  isDishInfoModalOpen.value = false;
+};
+
 provide("cityModal", {
   isCityModalOpen,
   openCityModal,
   closeCityModal,
+});
+
+provide("dishInfoModal", {
+  isDishInfoModalOpen,
+  openDishInfoModal,
+  closeDishInfoModal,
 });
 </script>
 
@@ -48,8 +62,26 @@ provide("cityModal", {
       @toggleToRegister="toggleToRegister"
       @openBookModal="openBookModal"
     />
-    <NuxtPage />
+    <NuxtPage class="pt-[105px]" />
     <Footer />
+
+    <transition name="fade">
+      <div
+        v-if="isDishInfoModalOpen"
+        class="fixed inset-0 z-50 flex items-center justify-center"
+      >
+        <div
+          class="absolute inset-0 bg-black/40 backdrop-blur-md backdrop-saturate-150 transition-all duration-300 ease-in-out z-40"
+          @click="closeDishInfoModal"
+        ></div>
+
+        <transition name="scale-fade">
+          <div class="relative z-50">
+            <DishInfo @closeDishInfoModal="closeDishInfoModal" />
+          </div>
+        </transition>
+      </div>
+    </transition>
 
     <transition name="fade">
       <div
