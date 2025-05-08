@@ -36,7 +36,7 @@ const dishList = ref([
 </script>
 
 <template>
-  <div class="flex flex-col mt-12">
+  <div class="flex flex-col mt-12" data-aos="fade-up">
     <div class="flex w-full items-center justify-between">
       <div class="font-bold text-3xl">Популярные блюда</div>
       <div class="flex items-center gap-4">

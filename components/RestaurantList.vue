@@ -2,6 +2,11 @@
 import res1 from "../assets/res1.png";
 import res2 from "../assets/res2.png";
 import res3 from "../assets/res3.png";
+
+import { inject } from "vue";
+
+const { openCityModal } = inject("cityModal");
+
 const restaurants = ref([
   {
     img: res1,
@@ -31,11 +36,12 @@ const restaurants = ref([
 </script>
 
 <template>
-  <div class="flex flex-col mt-10">
+  <div class="flex flex-col mt-10" data-aos="fade-up">
     <div class="flex w-full items-center justify-between">
       <div class="font-bold text-3xl">Рестораны в Алматы</div>
       <div
-        class="flex items-center gap-1 bg-[#EDEDED] rounded-[20px] px-5 py-2"
+        class="flex items-center gap-1 bg-[#EDEDED] rounded-[20px] px-5 py-2 cursor-pointer"
+        @click="openCityModal"
       >
         <img src="../assets/loc.svg" alt="" />
         <div class="font-medium text-lg">Выберите город</div>

@@ -6,7 +6,7 @@
       <!-- Logo -->
       <div class="flex items-center gap-3">
         <img
-          src="../assets/logo.svg"
+          src="../assets/logo_w.svg"
           class="w-6 h-6 md:w-7 md:h-7"
           alt="logo"
         />

@@ -5,7 +5,7 @@
     >
       <!-- Logo -->
       <NuxtLink to="/" class="flex items-center gap-3">
-        <img src="../assets/logo.svg" class="w-[70px] h-[70px]" alt="logo" />
+        <img src="../assets/logo_w.svg" class="w-[70px] h-[70px]" alt="logo" />
         <span class="text-2xl font-bold text-gray-800">Epicure</span>
       </NuxtLink>
 
@@ -17,12 +17,12 @@
         >
           Меню
         </NuxtLink>
-        <NuxtLink
-          href="#"
-          class="hover:text-black transition-all duration-200 text-lg font-medium"
+        <div
+          @click="$emit('openBookModal')"
+          class="hover:text-black transition-all duration-200 text-lg font-medium cursor-pointer"
         >
           Бронирование
-        </NuxtLink>
+        </div>
         <NuxtLink
           href="#"
           class="hover:text-black transition-all duration-200 text-lg font-medium"
@@ -30,8 +30,8 @@
           Пакет
         </NuxtLink>
         <NuxtLink
-          href="#"
-          class="hover:text-black transition-all duration-200 text-lg font-medium"
+          to="/About"
+          class="hover:text-black transition-all duration-200 text-lg font-medium coursor-pointer"
         >
           О нас
         </NuxtLink>
@@ -102,7 +102,11 @@ const isLoggedIn = ref(false);
 const username = ref("");
 const userStore = useUserStore();
 
-const emit = defineEmits(["openLoginModal", "toggleToRegister"]);
+const emit = defineEmits([
+  "openLoginModal",
+  "toggleToRegister",
+  "openBookModal",
+]);
 
 onMounted(() => {
   userStore.initialize();

@@ -1,6 +1,10 @@
 <script setup>
 const isLoginModalVisible = ref(false);
 const isRegisterModalVisible = ref(false);
+const isBookModalOpen = ref(false);
+const isCityModalOpen = ref(false);
+
+import { provide } from "vue";
 
 const openLoginModal = () => {
   isLoginModalVisible.value = true;
@@ -15,6 +19,26 @@ const toggleToRegister = () => {
   isLoginModalVisible.value = false;
   isRegisterModalVisible.value = true;
 };
+
+const openBookModal = () => {
+  isBookModalOpen.value = true;
+};
+const closeBookModal = () => {
+  isBookModalOpen.value = false;
+};
+
+const openCityModal = () => {
+  isCityModalOpen.value = true;
+};
+const closeCityModal = () => {
+  isCityModalOpen.value = false;
+};
+
+provide("cityModal", {
+  isCityModalOpen,
+  openCityModal,
+  closeCityModal,
+});
 </script>
 
 <template>
@@ -22,9 +46,46 @@ const toggleToRegister = () => {
     <Header
       @openLoginModal="openLoginModal"
       @toggleToRegister="toggleToRegister"
+      @openBookModal="openBookModal"
     />
     <NuxtPage />
-    <!-- <Footer /> -->
+    <Footer />
+
+    <transition name="fade">
+      <div
+        v-if="isCityModalOpen"
+        class="fixed inset-0 z-50 flex items-center justify-center"
+      >
+        <div
+          class="absolute inset-0 bg-black/40 backdrop-blur-md backdrop-saturate-150 transition-all duration-300 ease-in-out z-40"
+          @click="closeCityModal"
+        ></div>
+
+        <transition name="scale-fade">
+          <div class="relative z-50">
+            <CityModal @closeCityModal="closeCityModal" />
+          </div>
+        </transition>
+      </div>
+    </transition>
+
+    <transition name="fade">
+      <div
+        v-if="isBookModalOpen"
+        class="fixed inset-0 z-50 flex items-center justify-center"
+      >
+        <div
+          class="absolute inset-0 bg-black/40 backdrop-blur-md backdrop-saturate-150 transition-all duration-300 ease-in-out z-40"
+          @click="closeBookModal"
+        ></div>
+
+        <transition name="scale-fade">
+          <div class="relative z-50">
+            <BookModal @closeBookModal="closeBookModal" />
+          </div>
+        </transition>
+      </div>
+    </transition>
 
     <transition name="fade">
       <div
