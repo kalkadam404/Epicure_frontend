@@ -30,7 +30,7 @@ const persons = [
     name: "Қуатұлы Абуханифа",
     job: "Дизайнер интерьеров",
     about:
-      "Наш дизайнер интерьеров, которая создает уникальную атмосферу в каждом ресторане Epicure.",
+      "Наш дизайнер интерьеров, который создает уникальную атмосферу в каждом ресторане Epicure.",
   },
 ];
 </script>
@@ -76,6 +76,9 @@ const persons = [
         :job="person.job"
         :about="person.about"
       />
+    </div>
+    <div class="px-20 mb-10">
+      <BonusAppPromo />
     </div>
     <div
       class="bg-[#FAFAFA] flex items-start gap-5 w-full p-10 mt-10"

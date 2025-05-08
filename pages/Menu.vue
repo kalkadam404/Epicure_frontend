@@ -10,7 +10,7 @@
             :class="[
               'cursor-pointer text-lg font-medium',
               activeIndex === idx
-                ? 'text-blue-600 font-semibold'
+                ? 'text-black font-semibold '
                 : 'text-gray-500',
             ]"
           >
@@ -40,6 +40,9 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="px-20 mb-10">
+      <BonusAppPromo />
     </div>
   </div>
 </template>

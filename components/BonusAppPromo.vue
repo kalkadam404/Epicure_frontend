@@ -48,15 +48,15 @@
 
     <!-- Изображение телефона -->
     <div class="mt-8 md:mt-0 relative">
-      <div class="w-64 md:w-80">
+      <div class="">
         <img
-          src="../assets/screen.jpg"
+          src="../assets/iPhone.svg"
           alt="Мобильное приложение"
-          class="w-full h-auto object-contain"
+          class="w-full max-w-[1500px]"
         />
 
         <div
-          class="absolute top-20 right-0 bg-white rounded-lg p-2 shadow-lg flex items-center"
+          class="absolute top-20 right-[440px] bg-white rounded-lg p-2 shadow-lg flex items-center"
         >
           <div
             class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center text-green-500 mr-2"
@@ -67,7 +67,7 @@
         </div>
 
         <div
-          class="absolute top-48 right-4 bg-white rounded-lg p-2 shadow-lg flex items-center border border-gray-200"
+          class="absolute top-48 right-[220px] bg-white rounded-lg p-2 shadow-lg flex items-center border border-gray-200"
         >
           <div
             class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center text-green-500 mr-2"
@@ -78,7 +78,7 @@
         </div>
 
         <div
-          class="absolute bottom-40 right-12 bg-white rounded-lg p-2 shadow-lg flex items-center border border-gray-200"
+          class="absolute bottom-30 right-[450px] bg-white rounded-lg p-2 shadow-lg flex items-center border border-gray-200"
         >
           <div
             class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center text-green-500 mr-2"
