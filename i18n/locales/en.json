@@ -1,0 +1,27 @@
+{
+  "menu": "Menu",
+  "booking": "Booking",
+  "packages": "Packages",
+  "about": "About",
+  "greeting": "Greetings",
+  "myProfile": "My Profile",
+  "myOrders": "My Orders",
+  "logout": "Logout",
+  "login": "Login",
+  "register": "Register",
+  "restaurants": "Restaurants",
+  "restaurantIn": "Restaurants in Almaty",
+  "buttons": {
+    "select": "Select a city"
+  },
+  "popularDishes": "Popular Dishes",
+  "bonusAppPromo": {
+    "title": "Download the mobile app and get 1000 bonus points after your first payment",
+    "description": "We credit bonus points after each payment",
+    "buttonApps": "Download on",
+    "appStore": "App Store",
+    "allowed": "Available on",
+    "googlePlay": "Play Market",
+    "gift": "Reward"
+  }
+}

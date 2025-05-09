@@ -42,7 +42,7 @@ const dishList = ref([
 <template>
   <div class="flex flex-col mt-12" data-aos="fade-up">
     <div class="flex w-full items-center justify-between">
-      <div class="font-bold text-3xl">Популярные блюда</div>
+      <div class="font-bold text-3xl">{{ $t("popularDishes") }}</div>
       <div class="flex items-center gap-4">
         <div class="rounded-full border-2 border-[#E6E8EC]">
           <img

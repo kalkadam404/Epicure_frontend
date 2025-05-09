@@ -1,0 +1,27 @@
+{
+  "menu": "Меню",
+  "booking": "Бронирование",
+  "packages": "Пакеты",
+  "about": "О нас",
+  "greeting": "Привет",
+  "myProfile": "Мой профиль",
+  "myOrders": "Мои заказы",
+  "logout": "Выйти",
+  "login": "Войти",
+  "register": "Зарегистрироваться",
+  "restaurants": "Рестораны",
+  "restaurantIn": "Рестораны в Алматы",
+  "buttons": {
+    "select": "Выберите город"
+  },
+  "popularDishes": "Популярные блюда",
+  "bonusAppPromo": {
+    "title": "Скачайте мобильное приложение и получите 1000 бонусов после первой оплаты",
+    "description": "Начисляем бонусные баллы после каждой оплаты",
+    "buttonApps": "Загрузите в",
+    "appStore": "App Store",
+    "allowed": "Доступно в",
+    "googlePlay": "Play Market",
+    "gift": "Награда"
+  }
+}

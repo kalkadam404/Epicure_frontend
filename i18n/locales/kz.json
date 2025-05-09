@@ -1,0 +1,27 @@
+{
+  "menu": "Меню",
+  "booking": "Брондау",
+  "packages": "Пакеттер",
+  "about": "Біз туралы",
+  "greeting": "Сәлем",
+  "myProfile": "Менің профилім",
+  "myOrders": "Менің тапсырыстарым",
+  "logout": "Шығу",
+  "login": "Кіру",
+  "register": "Тіркелу",
+  "restaurants": "Мейрамханалар",
+  "restaurantIn": "Алматыдағы мейрамханалар",
+  "buttons": {
+    "select": "Қаланы таңдаңыз"
+  },
+  "popularDishes": "Танымал тағамдар",
+  "bonusAppPromo": {
+    "title": "Мобильді қосымшаны жүктеп алып, алғашқы тапсырыстан кейін 1000 бонус алыңыз",
+    "description": "Әр төлемнен кейін бонустық ұпайларды есептейміз",
+    "buttonApps": "қол жетімді",
+    "appStore": "App Store-дан",
+    "googlePlay": "Play Market-те",
+    "allowed": "қол жетімді",
+    "gift": "Сыйақы"
+  }
+}

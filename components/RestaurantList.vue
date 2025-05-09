@@ -37,13 +37,13 @@ const restaurants = ref([
 <template>
   <div class="flex flex-col mt-10" data-aos="fade-up">
     <div class="flex w-full items-center justify-between">
-      <div class="font-bold text-3xl">Рестораны в Алматы</div>
+      <div class="font-bold text-3xl">{{ $t("restaurantIn") }}</div>
       <div
         class="flex items-center gap-1 bg-[#EDEDED] rounded-[20px] px-5 py-2 cursor-pointer"
         @click="openCityModal"
       >
         <img src="../assets/loc.svg" alt="" />
-        <div class="font-medium text-lg">Выберите город</div>
+        <div class="font-medium text-lg">{{ $t("buttons.select") }}</div>
       </div>
     </div>
 

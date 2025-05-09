@@ -3,14 +3,14 @@
     class="mt-20 flex flex-col md:flex-row items-center justify-between bg-gradient-to-r from-gray-100 to-gray-200 p-6 rounded-[20px] overflow-hidden relative"
   >
     <div class="z-10 max-w-lg px-6 py-8">
-      <p class="text-gray-700 font-medium mb-2">Награда</p>
+      <p class="text-gray-700 font-medium mb-2">
+        {{ $t("bonusAppPromo.gift") }}
+      </p>
       <h2 class="text-3xl md:text-4xl font-bold text-black mb-4">
-        Скачайте мобильное приложение и получите 1000 бонусов после первой
-        оплаты
+        {{ $t("bonusAppPromo.title") }}
       </h2>
       <p class="text-gray-700 mb-6">
-        И станьте участником бонусной программы возвращая их по 5% с каждой
-        покупки
+        {{ $t("bonusAppPromo.description") }}
       </p>
 
       <div class="flex flex-col mt-10 sm:flex-row gap-4">
@@ -24,8 +24,8 @@
             />
           </svg>
           <div>
-            <div class="text-xs">Загрузите в</div>
-            <div class="font-medium">App Store</div>
+            <div class="text-xs">{{ $t("bonusAppPromo.buttonApps") }}</div>
+            <div class="font-medium">{{ $t("bonusAppPromo.appStore") }}</div>
           </div>
         </a>
 
@@ -39,8 +39,8 @@
             />
           </svg>
           <div>
-            <div class="text-xs">Доступно в</div>
-            <div class="font-medium">Play Market</div>
+            <div class="text-xs">{{ $t("bonusAppPromo.allowed") }}</div>
+            <div class="font-medium">{{ $t("bonusAppPromo.googlePlay") }}</div>
           </div>
         </a>
       </div>
