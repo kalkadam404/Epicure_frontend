@@ -12,7 +12,7 @@ export default defineNuxtConfig({
 
   modules: [
     "@pinia/nuxt",
-    "@formkit/auto-animate",
+    "@formkit/auto-animate/nuxt",
     "@vueuse/nuxt",
     "nuxt-aos",
     "@nuxtjs/i18n",

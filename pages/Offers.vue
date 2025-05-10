@@ -1,3 +1,69 @@
+<script setup>
+import resdinner from "../assets/romantic_dinner.png";
+import familydinner from "../assets/family_dinner.png";
+import businnesdinner from "../assets/businnes_dinner.png";
+import AOS from "aos";
+
+const offers = [
+  {
+    title: "Романтический вечер",
+    image: resdinner,
+    oldPrice: 14990,
+    newPrice: 7990,
+    description: [
+      "Ужин из 3 блюд на двоих",
+      "Бутылка вина на выбор",
+      "Десерт-комплимент",
+      "Свечи и цветочное оформление",
+    ],
+    badge: "-20%",
+    peopleCount: 2,
+    perPerson: false,
+  },
+  {
+    title: "Семейный обед",
+    image: familydinner,
+    oldPrice: 8490,
+    newPrice: 8490,
+    description: [
+      "Сет из 5 фирменных блюд",
+      "Напитки для всей семьи",
+      "Детское меню включено",
+      "Игровая зона для детей",
+    ],
+    badge: "Хит",
+    peopleCount: 4,
+    perPerson: false,
+  },
+  {
+    title: "Бизнес-ланч",
+    image: businnesdinner,
+    oldPrice: 1990,
+    newPrice: 1990,
+    description: [
+      "Салат + суп + горячее",
+      "Напиток на выбор",
+      "Обслуживание за 45 минут",
+      "Бесплатный Wi-Fi",
+    ],
+    badge: "Быстро",
+    peopleCount: 1,
+    perPerson: true,
+  },
+];
+
+onMounted(() => {
+  AOS.init({
+    duration: 800,
+    easing: "ease-in-out",
+    once: true,
+  });
+
+  // Обновим AOS если данные могли загружаться позже
+  AOS.refresh();
+});
+</script>
+
 <template>
   <section class="py-16 bg-white">
     <!-- Заголовок секции -->
@@ -14,293 +80,19 @@
     <!-- Пакеты предложений -->
     <div class="px-20 mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Пакет 1: Романтический ужин -->
-        <div
-          class="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow bg-gray-100"
-        >
-          <!-- Бейдж скидки -->
-          <div
-            class="absolute top-4 right-4 bg-black text-white text-sm px-3 py-1 rounded-full font-semibold z-10"
-          >
-            -20%
-          </div>
-
-          <!-- Изображение -->
-          <div class="h-64 overflow-hidden">
-            <img
-              src="../assets/romantic_dinner.png"
-              alt="Романтический ужин"
-              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-          </div>
-
-          <!-- Контент -->
-          <div class="p-6">
-            <h3 class="text-2xl font-bold text-black mb-2">
-              Романтический вечер
-            </h3>
-            <div class="flex items-center space-x-2 mb-4">
-              <span class="text-gray-500 line-through">14990 ₸</span>
-              <span class="text-black font-bold text-xl">7990 ₸</span>
-              <span class="text-gray-700 text-sm">/ на двоих</span>
-            </div>
-
-            <ul class="space-y-2 mb-6">
-              <li class="flex items-center text-gray-700">
-                <svg
-                  class="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-                Ужин из 3 блюд на двоих
-              </li>
-              <li class="flex items-center text-gray-700">
-                <svg
-                  class="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-                Бутылка вина на выбор
-              </li>
-              <li class="flex items-center text-gray-700">
-                <svg
-                  class="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-                Десерт-комплимент
-              </li>
-              <li class="flex items-center text-gray-700">
-                <svg
-                  class="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-                Свечи и цветочное оформление
-              </li>
-            </ul>
-
-            <button
-              class="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors"
-            >
-              Забронировать столик
-            </button>
-          </div>
-        </div>
-
-        <!-- Пакет 2: Семейный обед -->
-        <div
-          class="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow bg-gray-100"
-        >
-          <!-- Бейдж -->
-          <div
-            class="absolute top-4 right-4 bg-black text-white text-sm px-3 py-1 rounded-full font-semibold z-10"
-          >
-            Хит
-          </div>
-
-          <!-- Изображение -->
-          <div class="h-64 overflow-hidden">
-            <img
-              src="../assets/family_dinner.png"
-              alt="Семейный обед"
-              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-          </div>
-
-          <!-- Контент -->
-          <div class="p-6">
-            <h3 class="text-2xl font-bold text-black mb-2">Семейный обед</h3>
-            <div class="flex items-center space-x-2 mb-4">
-              <span class="text-black font-bold text-xl">8490 ₸</span>
-              <span class="text-gray-700 text-sm">/ до 4 персон</span>
-            </div>
-
-            <ul class="space-y-2 mb-6">
-              <li class="flex items-center text-gray-700">
-                <svg
-                  class="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-                Сет из 5 фирменных блюд
-              </li>
-              <li class="flex items-center text-gray-700">
-                <svg
-                  class="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-                Напитки для всей семьи
-              </li>
-              <li class="flex items-center text-gray-700">
-                <svg
-                  class="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-                Детское меню включено
-              </li>
-              <li class="flex items-center text-gray-700">
-                <svg
-                  class="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-                Игровая зона для детей
-              </li>
-            </ul>
-
-            <button
-              class="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors"
-            >
-              Забронировать столик
-            </button>
-          </div>
-        </div>
-
-        <!-- Пакет 3: Бизнес-ланч -->
-        <div
-          class="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow bg-gray-100"
-        >
-          <!-- Бейдж скидки -->
-          <div
-            class="absolute top-4 right-4 bg-black text-white text-sm px-3 py-1 rounded-full font-semibold z-10"
-          >
-            Быстро
-          </div>
-
-          <!-- Изображение -->
-          <div class="h-64 overflow-hidden">
-            <img
-              src="../assets/businnes_dinner.png"
-              alt="Бизнес-ланч"
-              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-          </div>
-
-          <!-- Контент -->
-          <div class="p-6">
-            <h3 class="text-2xl font-bold text-black mb-2">Бизнес-ланч</h3>
-            <div class="flex items-center space-x-2 mb-4">
-              <span class="text-black font-bold text-xl">1990 ₸</span>
-              <span class="text-gray-700 text-sm">/ на персону</span>
-            </div>
-
-            <ul class="space-y-2 mb-6">
-              <li class="flex items-center text-gray-700">
-                <svg
-                  class="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-                Салат + суп + горячее
-              </li>
-              <li class="flex items-center text-gray-700">
-                <svg
-                  class="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-                Напиток на выбор
-              </li>
-              <li class="flex items-center text-gray-700">
-                <svg
-                  class="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-                Обслуживание за 45 минут
-              </li>
-              <li class="flex items-center text-gray-700">
-                <svg
-                  class="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-                Бесплатный Wi-Fi
-              </li>
-            </ul>
-
-            <button
-              class="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors"
-            >
-              Забронировать столик
-            </button>
-          </div>
-        </div>
+        <OfferCard
+          v-for="(offer, index) in offers"
+          :key="index"
+          :title="offer.title"
+          :image="offer.image"
+          :oldPrice="offer.oldPrice"
+          :newPrice="offer.newPrice"
+          :description="offer.description"
+          :badge="offer.badge"
+          :peopleCount="offer.peopleCount"
+          :perPerson="offer.perPerson"
+          :dataAos="index % 2 === 0 ? 'fade-up' : 'fade-down'"
+        />
       </div>
     </div>
 
@@ -335,7 +127,3 @@
     </div>
   </section>
 </template>
-
-<script setup>
-// Здесь можно добавить логику, если необходимо
-</script>

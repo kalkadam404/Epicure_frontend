@@ -61,13 +61,30 @@
           >Запомнить меня</label
         >
       </div>
-      <button
-        @click="emit('closeLoginModal')"
-        type="submit"
-        class="w-full py-3 mt-4 bg-black text-white font-semibold rounded-md hover:bg-gray-500 transition duration-200"
-      >
-        Войти
-      </button>
+      <div class="flex flex-col gap-[22px]">
+        <button
+          @click="emit('closeLoginModal')"
+          type="submit"
+          class="w-full py-3 mt-4 bg-black text-white font-semibold rounded-md hover:bg-gray-500 transition duration-200"
+        >
+          Войти
+        </button>
+        <span class="text-[#ABABAB] text-center text-lg">OR</span>
+        <div class="flex items-center mx-auto gap-3">
+          <div
+            class="flex gap-5 items-center bg-black rounded-[9px] py-3 px-10"
+          >
+            <img src="../assets/google_icon.svg" alt="" />
+            <div class="text-white">Войти через Google</div>
+          </div>
+          <div class="bg-[#F6F6F6] rounded-[9px] py-3 px-3">
+            <img src="../assets/face.svg" alt="" />
+          </div>
+          <div class="bg-[#F6F6F6] rounded-[9px] py-3 px-3">
+            <img src="../assets/apple.svg" alt="" />
+          </div>
+        </div>
+      </div>
     </form>
     <div class="flex items-center justify-center mt-4 mx-auto">
       <span class="text-gray-500">У вас нет аккаунта?</span>
