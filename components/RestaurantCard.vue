@@ -1,13 +1,21 @@
 <script setup>
 import { ref } from "vue";
-defineProps({
+const props = defineProps({
   img: String,
   ResName: String,
   city: String,
   menuType: String,
-  time: String,
+  opening_time: String,
+  closing_time: String,
   rating: String,
 });
+
+const formattedOpeningTime = computed(() =>
+  props.opening_time ? props.opening_time.slice(0, 5) : ""
+);
+const formattedClosingTime = computed(() =>
+  props.closing_time ? props.closing_time.slice(0, 5) : ""
+);
 </script>
 
 <template>
@@ -37,14 +45,20 @@ defineProps({
     <!-- Время работы -->
     <div class="flex items-center gap-2 text-gray-700">
       <img src="../assets/time.svg" alt="" />
-      <span>{{ time }}</span>
+      <span>{{ formattedOpeningTime }} - {{ formattedClosingTime }}</span>
     </div>
 
     <!-- Теги -->
     <div class="flex gap-2 flex-wrap">
-      <span class="bg-gray-200 rounded-full px-3 py-1 text-sm">Wi-Fi</span>
-      <span class="bg-gray-200 rounded-full px-3 py-1 text-sm">Парковка</span>
-      <span class="bg-gray-200 rounded-full px-3 py-1 text-sm">Доставка</span>
+      <span class="bg-gray-200 rounded-full px-3 py-1 text-sm">{{
+        $t("selection.wifi")
+      }}</span>
+      <span class="bg-gray-200 rounded-full px-3 py-1 text-sm">{{
+        $t("selection.parking")
+      }}</span>
+      <span class="bg-gray-200 rounded-full px-3 py-1 text-sm">{{
+        $t("selection.delivery")
+      }}</span>
     </div>
 
     <!-- Рейтинг и кнопка -->
@@ -60,7 +74,7 @@ defineProps({
       <button
         class="border px-4 py-2 rounded-xl hover:bg-gray-100 transition font-medium"
       >
-        Забронировать
+        {{ $t("buttons.booking") }}
       </button>
     </div>
   </div>

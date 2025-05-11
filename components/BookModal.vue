@@ -14,7 +14,9 @@ const emit = defineEmits(["closeBookModal"]);
         @click="$emit('closeBookModal')"
       />
       <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-gray-800">Бронь столиков</h2>
+        <h2 class="text-2xl font-bold text-gray-800">
+          {{ $t("BookModal.book") }}
+        </h2>
         <button class="text-gray-400 hover:text-gray-600">
           <X size="{24}" />
         </button>
@@ -22,12 +24,11 @@ const emit = defineEmits(["closeBookModal"]);
 
       <div class="border-b border-gray-200 pb-6 mb-6">
         <p class="text-gray-600 mb-6">
-          Выберите дату и время бронирования и мы подберём самое удобное место
-          для вас
+          {{ $t("BookModal.description") }}
         </p>
 
         <div class="mb-4">
-          <label class="block text-gray-600 mb-2">Ресторан</label>
+          <label class="block text-gray-600 mb-2">{{ $t("restaurant") }}</label>
           <div class="relative">
             <select
               class="w-full p-4 border border-gray-300 rounded-lg appearance-none text-gray-800 pr-10"
@@ -50,24 +51,28 @@ const emit = defineEmits(["closeBookModal"]);
 
         <div class="grid grid-cols-2 gap-4 mb-4">
           <div>
-            <label class="block text-gray-600 mb-2">В какой день</label>
+            <label class="block text-gray-600 mb-2">{{
+              $t("BookModal.day")
+            }}</label>
             <div class="relative">
               <div
                 class="w-full p-4 border border-gray-300 rounded-lg flex justify-between items-center text-gray-400"
               >
-                <span>Выберите день</span>
+                <span>{{ $t("inputs.select_day") }}</span>
                 <img src="../assets/calendar.svg" />
               </div>
             </div>
           </div>
 
           <div>
-            <label class="block text-gray-600 mb-2">В какое время</label>
+            <label class="block text-gray-600 mb-2">{{
+              $t("BookModal.time")
+            }}</label>
             <div class="relative">
               <div
                 class="w-full p-4 border border-gray-300 rounded-lg flex justify-between items-center text-gray-400"
               >
-                <span>Выберите время</span>
+                <span>{{ $t("inputs.select_time") }}</span>
                 <img src="../assets/time.svg" />
               </div>
             </div>
@@ -75,7 +80,9 @@ const emit = defineEmits(["closeBookModal"]);
         </div>
 
         <div class="mb-4">
-          <label class="block text-gray-600 mb-2">Количество гостей</label>
+          <label class="block text-gray-600 mb-2">{{
+            $t("BookModal.count")
+          }}</label>
           <div class="relative">
             <input
               type="number"
@@ -95,7 +102,9 @@ const emit = defineEmits(["closeBookModal"]);
         </div>
 
         <div>
-          <label class="block text-gray-600 mb-2">Телефон</label>
+          <label class="block text-gray-600 mb-2">{{
+            $t("inputs.phone")
+          }}</label>
           <input
             type="tel"
             placeholder="+7 (___) ___-__-__"
@@ -107,7 +116,7 @@ const emit = defineEmits(["closeBookModal"]);
       <button
         class="w-full bg-black hover:bg-gray-950 text-white font-medium py-4 px-6 rounded-lg"
       >
-        Готово
+        {{ $t("buttons.done") }}
       </button>
     </div>
   </div>

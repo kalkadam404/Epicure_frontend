@@ -1,37 +1,30 @@
 <script setup>
-import res1 from "../assets/res1.png";
-import res2 from "../assets/res2.png";
-import res3 from "../assets/res3.png";
-
+import axios from "axios";
+import { useI18n } from "vue-i18n";
+const { locale } = useI18n();
 import { inject } from "vue";
 
 const { openCityModal } = inject("cityModal");
-const restaurants = ref([
-  {
-    img: res1,
-    ResName: "Chez Milo",
-    city: "Almaty",
-    menuType: "Европейская, Азиатская кухня",
-    time: "10:00 - 22:00",
-    rating: "5.0",
-  },
-  {
-    img: res2,
-    ResName: "Cafe Gourmet",
-    city: "Almaty",
-    menuType: "Французская кухня",
-    time: "09:00 - 23:00",
-    rating: "4.8",
-  },
-  {
-    img: res3,
-    ResName: "Cafe Gourmet",
-    city: "Almaty",
-    menuType: "Французская кухня",
-    time: "09:00 - 23:00",
-    rating: "4.8",
-  },
-]);
+const restaurants = ref([]);
+
+function getLocalized(item, field) {
+  const lang = locale.value.toLowerCase();
+  return item[`${field}_${lang}`] || item[`${field}_ru`]; // fallback to ru
+}
+
+const fetchRestaurants = async () => {
+  try {
+    const { data } = await axios.get("http://0.0.0.0:8000/api/v1/restaurants/");
+    restaurants.value = data.results;
+    console.log("Fetched restaurants:", restaurants.value);
+  } catch (error) {
+    console.error("Error fetching restaurants:", error);
+  }
+};
+
+onMounted(() => {
+  fetchRestaurants();
+});
 </script>
 
 <template>
@@ -43,19 +36,20 @@ const restaurants = ref([
         @click="openCityModal"
       >
         <img src="../assets/loc.svg" alt="" />
-        <div class="font-medium text-lg">{{ $t("buttons.select") }}</div>
+        <div class="font-medium text-lg">{{ $t("buttons.select_city") }}</div>
       </div>
     </div>
 
     <div class="grid grid-cols-3 gap-8 mt-10">
       <RestaurantCard
         v-for="(res, index) in restaurants"
-        :key="index"
-        :img="res.img"
-        :ResName="res.ResName"
-        :city="res.city"
-        :menuType="res.menuType"
-        :time="res.time"
+        :key="res.id"
+        :img="res.photo"
+        :ResName="res.name"
+        :city="res.city.name"
+        :menuType="getLocalized(res, 'description')"
+        :opening_time="res.opening_time"
+        :closing_time="res.closing_time"
         :rating="res.rating"
       />
     </div>

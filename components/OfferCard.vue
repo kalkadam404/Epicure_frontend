@@ -85,7 +85,7 @@ function pluralize(count) {
       <button
         class="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors"
       >
-        Забронировать столик
+        {{ $t("buttons.book_table") }}
       </button>
     </div>
   </div>

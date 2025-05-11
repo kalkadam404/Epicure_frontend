@@ -48,10 +48,12 @@ provide("cityModal", {
   closeCityModal,
 });
 
+const selectedDish = ref(null);
 provide("dishInfoModal", {
   isDishInfoModalOpen,
   openDishInfoModal,
   closeDishInfoModal,
+  selectedDish,
 });
 </script>
 

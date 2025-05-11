@@ -1,42 +1,35 @@
 <script setup>
-import dish1 from "../assets/dish1.png";
-import dish2 from "../assets/dish2.png";
-import dish3 from "../assets/dish3.png";
-import dish4 from "../assets/dish4.png";
-
+import axios from "axios";
 import { inject } from "vue";
+import { useI18n } from "vue-i18n";
+const { locale } = useI18n();
 
-const { openDishInfoModal } = inject("dishInfoModal");
-const dishList = ref([
-  {
-    img: dish1,
-    title: "Pepperoni",
-    restaurant: "Chez Milo",
-    category: "Menu",
-    price: 2000,
-  },
-  {
-    img: dish2,
-    title: "Beef Steak",
-    restaurant: "Chez Milo",
-    category: "Menu",
-    price: 3000,
-  },
-  {
-    img: dish3,
-    title: "Omelette",
-    restaurant: "Chez Milo",
-    category: "Menu",
-    price: 2200,
-  },
-  {
-    img: dish4,
-    title: "Cool Cocktail",
-    restaurant: "Chez Milo",
-    category: "Menu",
-    price: 2500,
-  },
-]);
+const { openDishInfoModal, selectedDish } = inject("dishInfoModal");
+const openDishModal = (dish) => {
+  selectedDish.value = dish; // запоминаем блюдо
+  openDishInfoModal(); // открываем модалку
+};
+const dishList = ref([]);
+
+function getLocalized(item, field) {
+  const lang = locale.value.toLowerCase();
+  return item[`${field}_${lang}`] || item[`${field}_ru`]; // fallback to ru
+}
+const fetchDishes = async () => {
+  try {
+    const { data } = await axios.get(
+      "http://0.0.0.0:8000/api/v1/products/menu-items/"
+    );
+    dishList.value = data.results.slice(0, 4);
+    console.log("Fetched dishes:", dishList.value);
+  } catch (error) {
+    console.error("Error fetching dishes:", error);
+  }
+};
+
+onMounted(() => {
+  fetchDishes();
+});
 </script>
 
 <template>
@@ -63,14 +56,14 @@ const dishList = ref([
 
     <div class="grid grid-cols-4 gap-8 mt-10">
       <DishCard
-        @click="openDishInfoModal"
         v-for="(dish, index) in dishList"
-        :key="index"
-        :img="dish.img"
-        :title="dish.title"
-        :restaurant="dish.restaurant"
-        :category="dish.category"
+        :key="dish.id"
+        :img="dish.image"
+        :title="getLocalized(dish, 'name')"
+        :restaurant="dish.restaurant_details.name"
+        :category="dish.menu_type_details.name"
         :price="dish.price"
+        @click="openDishModal(dish)"
       />
     </div>
   </div>

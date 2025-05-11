@@ -69,10 +69,10 @@ onMounted(() => {
     <!-- Заголовок секции -->
     <div class="container mx-auto px-4 mb-12 text-center">
       <h2 class="text-4xl md:text-5xl font-bold text-black mb-4">
-        Специальные предложения
+        {{ $t("offers_section.title") }}
       </h2>
       <p class="text-gray-700 text-lg max-w-2xl mx-auto">
-        Эксклюзивные пакеты и акции для незабываемых моментов в нашем ресторане
+        {{ $t("offers_section.description") }}
       </p>
       <div class="w-20 h-1 bg-black mx-auto mt-6"></div>
     </div>
@@ -104,23 +104,22 @@ onMounted(() => {
     <div class="mx-auto mt-16 px-20">
       <div class="bg-gray-100 p-8 rounded-lg text-center">
         <h3 class="text-2xl font-bold text-black mb-4">
-          Специальное предложение для подписчиков
+          {{ $t("offers_section.for_subscribers") }}
         </h3>
         <p class="text-gray-700 mb-6">
-          Подпишитесь на нашу рассылку и получите дополнительную скидку 10% на
-          любой пакет
+          {{ $t("offers_section.for_subscribers_description") }}
         </p>
 
         <div class="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
           <input
             type="email"
-            placeholder="Ваш email"
+            :placeholder="$t('inputs.your_email')"
             class="flex-grow px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black"
           />
           <button
             class="bg-black text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors"
           >
-            Подписаться
+            {{ $t("buttons.subscribe") }}
           </button>
         </div>
       </div>

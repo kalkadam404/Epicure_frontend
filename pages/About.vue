@@ -3,62 +3,53 @@ import me from "../assets/me.jpeg";
 import alzhik from "../assets/alzhik.jpg";
 import abu from "../assets/abu.jpg";
 import dauka from "../assets/dauka.jpg";
+const { t } = useI18n();
 const persons = [
   {
     img: alzhik,
     name: "Дарибаев Әлжан",
-    job: "Шеф-повар",
-    about:
-      "Наш шеф-повар с более чем 15-летним опытом работы в лучших ресторанах мира. Он создает уникальные блюда, которые радуют наших гостей. ",
+    job: t("our_team.chef"),
+    about: t("our_team.description1"),
   },
   {
     img: me,
     name: "Койшыбай Еркебұлан",
-    job: "Менеджер по обслуживанию клиентов",
-    about:
-      "Наш менеджер по обслуживанию клиентов. Он всегда готов помочь и сделать ваше посещение незабываемым.",
+    job: t("our_team.manager"),
+    about: t("our_team.description2"),
   },
   {
     img: dauka,
     name: "Дармен Дәулет",
-    job: "Сомелье",
-    about:
-      "Наш сомелье, который поможет вам выбрать идеальное вино к вашему блюду.",
+    job: t("our_team.waiter"),
+    about: t("our_team.description3"),
   },
   {
     img: abu,
     name: "Қуатұлы Абуханифа",
-    job: "Дизайнер интерьеров",
-    about:
-      "Наш дизайнер интерьеров, который создает уникальную атмосферу в каждом ресторане Epicure.",
+    job: t("our_team.designer"),
+    about: t("our_team.description4"),
   },
 ];
 </script>
 
 <template>
   <div class="flex flex-col items-center gap-5 mt-10">
-    <div class="font-bold text-4xl">О нас</div>
+    <div class="font-bold text-4xl">{{ $t("about") }}</div>
     <p class="text-gray-400 text-lg font-medium text-center w-[600px]">
-      Узнайте больше о нашей истории, команде и философии Epicure.
+      {{ $t("aboutUs.title_mini") }}
     </p>
     <main class="flex gap-5 justify-between items-center mt-10 mb-20 px-20">
       <div class="flex flex-col gap-4" data-aos="fade-down">
-        <div class="font-bold text-5xl">Наша история</div>
+        <div class="font-bold text-5xl">{{ $t("aboutUs.our_story") }}</div>
         <div class="flex flex-col gap-1 mt-5 w-[650px]">
           <div class="text-gray-400 text-lg font-medium mb-4">
-            Epicure начал свою работу в 2010 году как небольшой семейный
-            ресторан. За прошедшие годы мы выросли в сеть ресторанов, но
-            сохранили наши основные ценности: качество, гостеприимство и
-            внимание к деталям.
+            {{ $t("aboutUs.description1") }}
           </div>
           <div class="text-gray-400 text-lg font-medium mb-4">
-            Мы гордимся тем, что создаем не просто места для еды, а пространства
-            для общения, отдыха и наслаждения изысканной кухней. Каждый наш
-            ресторан имеет свою уникальную атмосферу и концепцию.
+            {{ $t("aboutUs.description2") }}
           </div>
           <div class="text-gray-400 text-lg font-medium mb-4">
-            Наша миссия — делать каждое посещение ресторана особенным и
-            запоминающимся для наших гостей.
+            {{ $t("aboutUs.description3") }}
           </div>
         </div>
       </div>
@@ -66,7 +57,7 @@ const persons = [
         <img src="../assets/res_history.png" class="rounded-lg" />
       </div>
     </main>
-    <div class="font-bold text-4xl">Наша команда</div>
+    <div class="font-bold text-4xl">{{ $t("aboutUs.our_team") }}</div>
     <div class="grid grid-cols-4 gap-8 mt-10 px-20" data-aos="fade-down">
       <PersonCard
         v-for="(person, index) in persons"
@@ -85,10 +76,9 @@ const persons = [
       data-aos="fade-up"
     >
       <div class="flex flex-col gap-5 w-1/2">
-        <div class="font-bold text-2xl">Свяжитесь с нами</div>
+        <div class="font-bold text-2xl">{{ $t("aboutUs.contact_us") }}</div>
         <div class="w-[600px]">
-          Если у вас есть вопросы или предложения, пожалуйста, свяжитесь с нами
-          любым удобным способом
+          {{ $t("aboutUs.contact_description") }}
         </div>
         <div class="flex flex-col gap-3">
           <div class="flex gap-2 items-center">
@@ -101,7 +91,7 @@ const persons = [
           </div>
           <div class="flex gap-2 items-center">
             <img src="../assets/location.svg" alt="" />
-            <div>ул. Толе би, 59, Алматы</div>
+            <div>{{ $t("aboutUs.address") }}</div>
           </div>
         </div>
         <div class="flex gap-4 mt-2">
@@ -125,52 +115,56 @@ const persons = [
       <div class="flex flex-col gap-5 w-1/2">
         <div class="grid grid-cols-2 gap-5">
           <div>
-            <label for="username" class="block text-gray-700 font-medium"
-              >Имя</label
-            >
+            <label for="username" class="block text-gray-700 font-medium">{{
+              $t("inputs.name")
+            }}</label>
             <input
               type="text"
               id="name"
               required
-              placeholder="Ваше имя"
+              :placeholder="$t('inputs.your_name')"
               class="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
             />
           </div>
           <div>
-            <label for="email" class="block text-gray-700 font-medium"
-              >Email</label
-            >
+            <label for="email" class="block text-gray-700 font-medium">{{
+              $t("inputs.email")
+            }}</label>
             <input
               type="text"
               id="email"
               required
-              placeholder="Ваш email"
+              :placeholder="$t('inputs.your_email')"
               class="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
             />
           </div>
         </div>
         <div>
-          <label class="block text-gray-700 font-medium">Тема</label>
+          <label class="block text-gray-700 font-medium">{{
+            $t("inputs.title")
+          }}</label>
           <input
             type="text"
             id="tema"
             required
-            placeholder="Тема сообщения"
+            :placeholder="$t('inputs.title_placeholder')"
             class="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
           />
         </div>
         <div>
-          <label class="block text-gray-700 font-medium">Сообщения</label>
+          <label class="block text-gray-700 font-medium">{{
+            $t("inputs.message")
+          }}</label>
           <textarea
             type="text"
             id="message"
             required
-            placeholder="Ваше сообщение"
+            :placeholder="$t('inputs.message_placeholder')"
             class="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
           />
         </div>
         <button class="py-2 px-5 bg-black text-white rounded-lg">
-          Отправить сообщение
+          {{ $t("buttons.send_message") }}
         </button>
       </div>
     </div>

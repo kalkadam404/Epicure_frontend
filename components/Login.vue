@@ -9,16 +9,16 @@
       @click="$emit('closeLoginModal')"
     />
     <div>
-      <div class="text-2xl font-bold">Вход в аккаунт</div>
+      <div class="text-2xl font-bold">{{ $t("sign_in") }}</div>
       <p class="text-gray-500">
-        Введите ваш номер телефона и пароль для входа в систему
+        {{ $t("sign_in_mini") }}
       </p>
     </div>
     <form @submit.prevent="login" class="w-full flex flex-col gap-4">
       <div>
-        <label for="username" class="block text-gray-700 font-medium"
-          >Номер телефона</label
-        >
+        <label for="username" class="block text-gray-700 font-medium">{{
+          $t("inputs.phone_number")
+        }}</label>
         <input
           v-model="phone_number"
           type="text"
@@ -30,10 +30,10 @@
       </div>
       <div>
         <div class="flex justify-between items-center">
-          <label for="password" class="block text-gray-700 font-medium"
-            >Пароль</label
-          >
-          <div>Забыли пароль?</div>
+          <label for="password" class="block text-gray-700 font-medium">{{
+            $t("inputs.password")
+          }}</label>
+          <div>{{ $t("forgot_pass") }}</div>
         </div>
         <div class="relative mt-2">
           <input
@@ -41,7 +41,7 @@
             type="password"
             id="password"
             required
-            placeholder="Введите ваш пароль"
+            :placeholder="$t('inputs.your_password')"
             class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
           />
           <img
@@ -57,9 +57,9 @@
           id="rememberMe"
           class="w-4 h-4 text-black border-gray-300 rounded focus:ring-black"
         />
-        <label for="rememberMe" class="ml-2 text-gray-700"
-          >Запомнить меня</label
-        >
+        <label for="rememberMe" class="ml-2 text-gray-700">{{
+          $t("remember_me")
+        }}</label>
       </div>
       <div class="flex flex-col gap-[22px]">
         <button
@@ -67,15 +67,15 @@
           type="submit"
           class="w-full py-3 mt-4 bg-black text-white font-semibold rounded-md hover:bg-gray-500 transition duration-200"
         >
-          Войти
+          {{ $t("login") }}
         </button>
-        <span class="text-[#ABABAB] text-center text-lg">OR</span>
+        <span class="text-[#ABABAB] text-center text-lg">{{ $t("or") }}</span>
         <div class="flex items-center mx-auto gap-3">
           <div
             class="flex gap-5 items-center bg-black rounded-[9px] py-3 px-10"
           >
             <img src="../assets/google_icon.svg" alt="" />
-            <div class="text-white">Войти через Google</div>
+            <div class="text-white">{{ $t("login_google") }}</div>
           </div>
           <div class="bg-[#F6F6F6] rounded-[9px] py-3 px-3">
             <img src="../assets/face.svg" alt="" />
@@ -87,11 +87,11 @@
       </div>
     </form>
     <div class="flex items-center justify-center mt-4 mx-auto">
-      <span class="text-gray-500">У вас нет аккаунта?</span>
+      <span class="text-gray-500">{{ $t("no_acc") }}</span>
       <span
         class="ml-2 text-black font-semibold cursor-pointer"
         @click="$emit('toggleToRegister')"
-        >Зарегистрируйтесь</span
+        >{{ $t("register2") }}</span
       >
     </div>
   </div>

@@ -19,25 +19,25 @@
           href="#"
           class="hover:text-black transition-all duration-200 text-sm font-medium"
         >
-          Условия использования
+          {{ $t("terms") }}
         </NuxtLink>
         <NuxtLink
           href="#"
           class="hover:text-black transition-all duration-200 text-sm font-medium"
         >
-          Политика конфиденциальности
+          {{ $t("policy") }}
         </NuxtLink>
         <NuxtLink
           href="#"
           class="hover:text-black transition-all duration-200 text-sm font-medium"
         >
-          Контакты
+          {{ $t("contact") }}
         </NuxtLink>
       </nav>
       <div
         class="hover:text-black transition-all duration-200 text-[12px] font-medium text-gray-700"
       >
-        © 2025 Epicure. Все права защищены.
+        {{ $t("rights") }}
       </div>
     </div>
   </footer>

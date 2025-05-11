@@ -9,49 +9,66 @@
       @click="$emit('closeDishInfoModal')"
     />
     <div>
-      <div class="text-2xl font-bold">Информация о блюде</div>
+      <div class="text-2xl font-bold">{{ $t("DishInfo.info") }}</div>
     </div>
 
     <div
       class="flex flex-col gap-4 w-full border-t border-b border-[#afafaf] pt-5 pb-5"
     >
-      <div class="font-bold text-xl">Куриные крылышки во фритюре</div>
-      <div class="text-base">
-        Отварные куриные крылья, маринованные с китайскими специями в панировке
-        и обжаренные до хрустящей корочки
+      <div class="font-bold text-xl">
+        {{ getLocalized(selectedDish, "name") }}
       </div>
-      <div class="font-bold text-lg">3500.00 ₸</div>
+      <div class="text-base">
+        {{ getLocalized(selectedDish, "description") }}
+      </div>
+      <div class="font-bold text-lg">{{ selectedDish.price }} ₸</div>
     </div>
     <div class="flex flex-col gap-4 w-full border-b border-[#afafaf] pb-5">
-      <div class="font-bold text-xl">Пищевая ценность</div>
+      <div class="font-bold text-xl">{{ $t("DishInfo.dish_value") }}</div>
       <div class="flex gap-4 items-center justify-center">
         <div class="flex flex-col items-center gap-2">
-          <div class="font-bold">1 ккал</div>
-          <span>Калории</span>
+          <div class="font-bold">
+            {{ selectedDish.calories }} {{ $t("DishInfo.kcal") }}
+          </div>
+          <span>{{ $t("DishInfo.calories") }}</span>
         </div>
         <div class="flex flex-col items-center gap-2">
-          <div class="font-bold">120.00 г</div>
-          <span>Белки</span>
+          <div class="font-bold">
+            {{ selectedDish.proteins }} {{ $t("DishInfo.grams") }}
+          </div>
+          <span>{{ $t("DishInfo.protein") }}</span>
         </div>
         <div class="flex flex-col items-center gap-2">
-          <div class="font-bold">100.00 г</div>
-          <span>Жиры</span>
+          <div class="font-bold">
+            {{ selectedDish.fats }} {{ $t("DishInfo.grams") }}
+          </div>
+          <span>{{ $t("DishInfo.fat") }}</span>
         </div>
         <div class="flex flex-col items-center gap-2">
-          <div class="font-bold">Н/Д</div>
-          <span>Углеводы</span>
+          <div class="font-bold">
+            {{ selectedDish.carbohydrates }} {{ $t("DishInfo.grams") }}
+          </div>
+          <span>{{ $t("DishInfo.carbohydrates") }}</span>
         </div>
       </div>
     </div>
     <div class="flex flex-col gap-4 w-full border-b border-[#afafaf] pb-5">
-      <div class="font-bold text-xl">Ресторан</div>
-      <span class="text-[#9D9D9D]">Chez Milo</span>
+      <div class="font-bold text-xl">{{ $t("restaurant") }}</div>
+      <span class="text-[#9D9D9D]">{{
+        selectedDish.restaurant_details.name
+      }}</span>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
-import axios from "axios";
+import { useI18n } from "vue-i18n";
+const { locale } = useI18n();
+
+function getLocalized(item, field) {
+  const lang = locale.value.toLowerCase();
+  return item[`${field}_${lang}`] || item[`${field}_ru`]; // fallback to ru
+}
 const emit = defineEmits(["closeDishInfoModal"]);
+const { selectedDish } = inject("dishInfoModal");
 </script>
