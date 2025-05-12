@@ -6,8 +6,8 @@ const { locale } = useI18n();
 
 const { openDishInfoModal, selectedDish } = inject("dishInfoModal");
 const openDishModal = (dish) => {
-  selectedDish.value = dish; // запоминаем блюдо
-  openDishInfoModal(); // открываем модалку
+  selectedDish.value = dish;
+  openDishInfoModal();
 };
 const dishList = ref([]);
 

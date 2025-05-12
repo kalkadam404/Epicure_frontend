@@ -14,7 +14,7 @@
                 : 'text-gray-500',
             ]"
           >
-            {{ cat }}
+            {{ cat.name }}
           </li>
         </ul>
       </div>
@@ -26,16 +26,16 @@
           :ref="(el) => (sectionRefs[idx] = el)"
           class="space-y-4 scroll-mt-[110px]"
         >
-          <h2 class="text-xl font-bold text-gray-800 mb-5">{{ cat }}</h2>
+          <h2 class="text-xl font-bold text-gray-800 mb-5">{{ cat.name }}</h2>
           <div class="grid grid-cols-3 gap-3">
             <MenuItem
-              @click="openDishInfoModal"
-              v-for="(dish, index) in dishList"
-              :key="index"
-              :img="dish.img"
-              :title="dish.title"
-              :category="dish.category"
+              v-for="(dish, index) in groupedDishes[cat.id]"
+              :key="dish.id"
+              :img="dish.image"
+              :title="getLocalized(dish, 'name')"
+              :category="dish.menu_type_details.name"
               :price="dish.price"
+              @click="openDishModal(dish)"
             />
           </div>
         </div>
@@ -48,47 +48,57 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue";
-import dish1 from "../assets/dish1.png";
-import dish2 from "../assets/dish2.png";
-import dish3 from "../assets/dish3.png";
-import dish4 from "../assets/dish4.png";
-
 import { inject } from "vue";
+import axios from "axios";
+import { useI18n } from "vue-i18n";
+const { locale } = useI18n();
 
-const { openDishInfoModal } = inject("dishInfoModal");
-const dishList = ref([
-  {
-    img: dish1,
-    title: "Куриные крылышки во фритюре",
-    category: "Куриные крылышки обжареные во фритюре.",
-    price: 2000,
-  },
-  {
-    img: dish2,
-    title: "Бараньи ребрышки под соусом",
-    category:
-      "Бараньи ребрышки обжареная с перцем,репчатым луком и чесноком, в томатном соусе.",
-    price: 3000,
-  },
-  {
-    img: dish3,
-    title: "Говяжьи палочки хрустящие",
-    category: "Говяжьи палочки хрустящие с соусом.",
-    price: 2200,
-  },
-  {
-    img: dish4,
-    title: "Фунчеза 'Гостеприимство'",
-    category:
-      "Серая фунчеза обжаривается с добавлениемяйца, джусая, китайского перца ,бобовых ростков",
-    price: 2500,
-  },
-]);
-const categories = ["Супы", "Салаты", "Фирменные блюда", "Десерты", "Напитки"];
+const { openDishInfoModal, selectedDish } = inject("dishInfoModal");
+const openDishModal = (dish) => {
+  selectedDish.value = dish;
+  openDishInfoModal();
+};
+const dishList = ref([]);
+const categories = ref([]);
 const activeIndex = ref(0);
 const sectionRefs = ref([]);
-const menuContainer = ref(null);
+
+const fetchCategories = async () => {
+  try {
+    const { data } = await axios.get(
+      "http://0.0.0.0:8000/api/v1/products/menu-types/"
+    );
+    categories.value = data.results;
+    console.log("categories", data);
+  } catch (err) {
+    console.log("err", err);
+  }
+};
+
+const fetchDishes = async () => {
+  try {
+    const { data } = await axios.get(
+      "http://0.0.0.0:8000/api/v1/products/menu-items/"
+    );
+    console.log("dishes", data);
+    dishList.value = data.results;
+    // console.log(dishList.value);
+  } catch (err) {
+    console.log("err", err);
+  }
+};
+
+const groupedDishes = computed(() => {
+  const grouped = {};
+  for (const dish of dishList.value) {
+    const typeId = dish.menu_type_details.id;
+    if (!grouped[typeId]) {
+      grouped[typeId] = [];
+    }
+    grouped[typeId].push(dish);
+  }
+  return grouped;
+});
 
 const scrollToSection = (index) => {
   sectionRefs.value[index]?.scrollIntoView({
@@ -108,9 +118,16 @@ const handleScroll = () => {
   }
 };
 
+function getLocalized(item, field) {
+  const lang = locale.value.toLowerCase();
+  return item[`${field}_${lang}`] || item[`${field}_ru`]; // fallback to ru
+}
+
 onMounted(() => {
   window.addEventListener("scroll", handleScroll);
   handleScroll();
+  fetchCategories();
+  fetchDishes();
 });
 
 onBeforeUnmount(() => {

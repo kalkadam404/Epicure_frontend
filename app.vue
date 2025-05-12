@@ -1,9 +1,11 @@
 <script setup>
+import axios from "axios";
 const isLoginModalVisible = ref(false);
 const isRegisterModalVisible = ref(false);
 const isBookModalOpen = ref(false);
 const isCityModalOpen = ref(false);
 const isDishInfoModalOpen = ref(false);
+const dishes = ref([]);
 
 import { provide } from "vue";
 
@@ -54,6 +56,28 @@ provide("dishInfoModal", {
   openDishInfoModal,
   closeDishInfoModal,
   selectedDish,
+});
+
+const handleReservationSubmit = (reservationData) => {
+  console.log("Reservation submitted:", reservationData);
+  // Здесь позже будет Stripe
+  closeModal();
+};
+
+const fetchDishes = async () => {
+  try {
+    const { data } = await axios.get(
+      "http://0.0.0.0:8000/api/v1/products/menu-items/"
+    );
+    dishes.value = data.results;
+    console.log(dishes.value);
+  } catch (error) {
+    console.error("Ошибка при получении блюд:", error);
+  }
+};
+
+onMounted(() => {
+  fetchDishes();
 });
 </script>
 
@@ -115,7 +139,11 @@ provide("dishInfoModal", {
 
         <transition name="scale-fade">
           <div class="relative z-50">
-            <BookModal @closeBookModal="closeBookModal" />
+            <BookModal
+              @closeBookModal="closeBookModal"
+              :dishes="dishes"
+              @submit="handleReservationSubmit"
+            />
           </div>
         </transition>
       </div>

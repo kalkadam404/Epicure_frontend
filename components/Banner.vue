@@ -20,7 +20,7 @@
         class="min-w-full w-full flex-shrink-0 overflow-hidden relative"
       >
         <img
-          :src="banner.img"
+          :src="banner.image"
           alt="Banner"
           class="cursor-pointer w-full h-[500px] object-cover hover:scale-105 transition-transform duration-1000"
           draggable="false"
@@ -38,15 +38,15 @@
             class="text-white text-xl max-w-2xl drop-shadow-md transform transition-all duration-500 hover:scale-105"
           >
             {{
-              banner.subtitle ||
+              banner.content ||
               "Откройте для себя наши новые продукты и специальные предложения"
             }}
           </p>
           <button
-            v-if="banner.buttonText"
+            v-if="banner.button_text"
             class="mt-6 px-6 py-2 bg-white text-black font-semibold rounded-full hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105"
           >
-            {{ banner.buttonText }}
+            {{ banner.button_text }}
           </button>
         </div>
       </div>
@@ -74,42 +74,8 @@
 </template>
 
 <script setup>
-import banner1 from "../assets/banner1.png";
-import banner2 from "../assets/banner2.png";
-import banner3 from "../assets/banner3.png";
-import banner4 from "../assets/main_img.png";
-
-// Banner data sample - add your actual banner data here
-const banners = ref([
-  {
-    id: 1,
-    img: banner1,
-    title: "Забронируйте столик",
-    subtitle: "Особая атмосфера для ваших важных встреч и праздников",
-    buttonText: "Бронировать сейчас",
-  },
-  {
-    id: 2,
-    img: banner2,
-    title: "Изысканная кухня",
-    subtitle: "Насладитесь неповторимыми блюдами от нашего шеф-повара",
-    buttonText: "Меню ресторана",
-  },
-  {
-    id: 3,
-    img: banner3,
-    title: "Сезонное предложение",
-    subtitle: "Новое весеннее меню с использованием свежих сезонных продуктов",
-    buttonText: "Попробовать",
-  },
-  {
-    id: 4,
-    img: banner4,
-    title: "Специальные предложения",
-    subtitle: "Узнайте о наших акциях и специальных предложениях",
-    buttonText: "Узнать больше",
-  },
-]);
+import axios from "axios";
+const banners = ref([]);
 
 const current = ref(0);
 const slideContainer = ref(null);
@@ -121,13 +87,27 @@ const transitionStyle = computed(() =>
   transitionActive.value ? "transition-transform duration-500 ease-in-out" : ""
 );
 
+const fetchBanners = async () => {
+  try {
+    const { data } = await axios.get(
+      "http://0.0.0.0:8000/api/v1/advertisements/banners/"
+    );
+    banners.value = data;
+    console.log(banners.value);
+    console.log(data);
+  } catch (err) {
+    console.log("err", err);
+  }
+};
+
 // Handle duplicate slides for infinite effect
 const extendedBanners = computed(() => {
+  if (!banners.value.length) return [];
   return [
     banners.value[banners.value.length - 1],
     ...banners.value,
     banners.value[0],
-  ];
+  ].filter(Boolean); // защищает от undefined
 });
 
 const translateValue = computed(() => {
@@ -229,6 +209,7 @@ const pauseAutoplay = () => {
 
 onMounted(() => {
   startAutoplay();
+  fetchBanners();
 });
 
 onUnmounted(() => {

@@ -73,6 +73,7 @@
         <div class="flex items-center mx-auto gap-3">
           <div
             class="flex gap-5 items-center bg-black rounded-[9px] py-3 px-10"
+            @click="loginWithGoogle"
           >
             <img src="../assets/google_icon.svg" alt="" />
             <div class="text-white">{{ $t("login_google") }}</div>
@@ -125,5 +126,9 @@ const login = async () => {
     console.error("Login failed:", error.response?.data || error);
     alert("Неверный логин или пароль"); // можно добавить alert
   }
+};
+const loginWithGoogle = () => {
+  window.location.href =
+    "http://localhost:8000/api/v1/users/accounts/google/login/";
 };
 </script>

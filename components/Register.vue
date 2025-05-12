@@ -12,7 +12,7 @@
       <div class="text-2xl font-bold">{{ $t("sign_up") }}</div>
       <p class="text-gray-500">{{ $t("sign_up_text") }}</p>
     </div>
-    <form @submit.prevent="register" class="w-full flex flex-col gap-4">
+    <form @submit.prevent="signup" class="w-full flex flex-col gap-4">
       <div>
         <label for="username" class="block text-gray-700 font-medium"
           >{{ $t("inputs.phone_number") }} *</label
@@ -25,6 +25,12 @@
           placeholder="+7 (___) ___-__-__"
           class="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
         />
+        <p
+          v-if="validationErrors.phone_number"
+          class="text-red-500 text-sm mt-1"
+        >
+          {{ validationErrors.phone_number[0] }}
+        </p>
       </div>
       <div>
         <label for="email" class="block text-gray-700 font-medium">{{
@@ -37,19 +43,25 @@
           :placeholder="$t('inputs.enter_your_email')"
           class="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
         />
+        <p v-if="validationErrors.email" class="text-red-500 text-sm mt-1">
+          {{ validationErrors.email[0] }}
+        </p>
       </div>
       <div>
         <label class="block text-gray-700 font-medium">{{
-          $t("inputs.name")
+          $t("inputs.username")
         }}</label>
         <input
-          v-model="name"
+          v-model="username"
           type="text"
           id="name"
           required
-          :placeholder="$t('inputs.enter_your_name')"
+          :placeholder="$t('inputs.enter_your_username')"
           class="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
         />
+        <p v-if="validationErrors.username" class="text-red-500 text-sm mt-1">
+          {{ validationErrors.username[0] }}
+        </p>
       </div>
 
       <div>
@@ -67,6 +79,9 @@
             :placeholder="$t('inputs.your_password')"
             class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
           />
+          <p v-if="validationErrors.password" class="text-red-500 text-sm mt-1">
+            {{ validationErrors.password[0] }}
+          </p>
         </div>
       </div>
 
@@ -85,6 +100,12 @@
             :placeholder="$t('inputs.confirm_your')"
             class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
           />
+          <p
+            v-if="validationErrors.password_confirm"
+            class="text-red-500 text-sm mt-1"
+          >
+            {{ validationErrors.password_confirm[0] }}
+          </p>
         </div>
       </div>
 
@@ -118,8 +139,10 @@
 
 <script setup>
 import { ref } from "vue";
-
+import { useAuthStore } from "../stores/auth";
+const validationErrors = ref({});
 const userStore = useUserStore();
+const authStore = useAuthStore();
 const emit = defineEmits([
   "closeRegisterModal",
   "toggleToRegister",
@@ -127,36 +150,38 @@ const emit = defineEmits([
 ]);
 
 const phone_number = ref("");
-const name = ref("");
+const username = ref("");
 const email = ref("");
 const password = ref("");
 const password_confirm = ref("");
 const error = ref(null);
 const success = ref(false);
 
-const register = async () => {
+const signup = async () => {
   error.value = null;
   success.value = false;
+  validationErrors.value = {};
 
   try {
-    await userStore.register(
-      phone_number.value,
-      name.value,
-      email.value,
-      password.value,
-      password_confirm.value
-    );
+    await authStore.signup({
+      phone_number: phone_number.value,
+      username: username.value,
+      email: email.value,
+      password: password.value,
+      password_confirm: password_confirm.value,
+    });
+
     success.value = true;
+    emit("closeRegisterModal");
+    emit("openLoginModal");
   } catch (err) {
     console.error("Registration error:", err);
-    error.value =
-      err?.phone_number?.[0] ||
-      err?.email?.[0] ||
-      err?.password?.[0] ||
-      err?.name?.[0] ||
-      "Ошибка регистрации";
+
+    if (err?.status === 400) {
+      validationErrors.value = err.response.data; // Здесь уже лежат ошибки от Django
+    } else {
+      error.value = "Что-то пошло не так. Попробуйте позже.";
+    }
   }
-  emit("closeRegisterModal");
-  emit("openLoginModal"); // открываем модалку входа
 };
 </script>

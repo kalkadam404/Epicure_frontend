@@ -28,7 +28,7 @@
   "restaurant": "Ресторан",
   "restaurants": "Рестораны",
   "restaurantIn": "Рестораны в Алматы",
-  "Offers_section": {
+  "offers_section": {
     "title": "Специальные предложения",
     "description": "Эксклюзивные пакеты и акции для незабываемых моментов в нашем ресторане",
     "for_subscribers": "Специальное предложение для подписчиков",
@@ -48,10 +48,11 @@
     "password": "Пароль",
     "name": "Имя",
     "surname": "Фамилия",
+    "username": "Имя пользователя",
     "phone": "Телефон",
     "address": "Адрес",
     "your_name": "Ваше имя",
-    "enter_your_name": "Введите ваше имя",
+    "enter_your_username": "Введите ваше имя пользователя",
     "your_email": "Ваш email",
     "enter_your_email": "Введите ваш email",
     "title": "Тема",

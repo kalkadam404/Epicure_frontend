@@ -3,7 +3,7 @@ defineProps({
   img: String,
   title: String,
   category: String,
-  price: Number,
+  price: String,
 });
 </script>
 
@@ -18,7 +18,7 @@ defineProps({
       <p class="text-gray-400 text-sm mb-3">{{ category }}</p>
 
       <div class="mt-auto">
-        <p class="text-lg font-medium">{{ price.toFixed(2) }} ₸</p>
+        <p class="text-lg font-medium">{{ price }} ₸</p>
       </div>
     </div>
   </div>

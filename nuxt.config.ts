@@ -17,6 +17,11 @@ export default defineNuxtConfig({
     "nuxt-aos",
     "@nuxtjs/i18n",
   ],
+  runtimeConfig: {
+    STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+    STRIPE_WEBHOOK_SECRET_KEY: process.env.STRIPE_WEBHOOK_SECRET_KEY,
+  },
   i18n: {
     locales: [
       { code: "EN", name: "English", file: "en.json" },
