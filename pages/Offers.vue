@@ -1,56 +1,30 @@
 <script setup>
-import resdinner from "../assets/romantic_dinner.png";
-import familydinner from "../assets/family_dinner.png";
-import businnesdinner from "../assets/businnes_dinner.png";
 import AOS from "aos";
+import axios from "axios";
+import { useI18n } from "vue-i18n";
+const { locale } = useI18n();
+const offers = ref([]);
+const tokenJWT = useCookie("token_jwt");
 
-const offers = [
-  {
-    title: "Романтический вечер",
-    image: resdinner,
-    oldPrice: 14990,
-    newPrice: 7990,
-    description: [
-      "Ужин из 3 блюд на двоих",
-      "Бутылка вина на выбор",
-      "Десерт-комплимент",
-      "Свечи и цветочное оформление",
-    ],
-    badge: "-20%",
-    peopleCount: 2,
-    perPerson: false,
-  },
-  {
-    title: "Семейный обед",
-    image: familydinner,
-    oldPrice: 8490,
-    newPrice: 8490,
-    description: [
-      "Сет из 5 фирменных блюд",
-      "Напитки для всей семьи",
-      "Детское меню включено",
-      "Игровая зона для детей",
-    ],
-    badge: "Хит",
-    peopleCount: 4,
-    perPerson: false,
-  },
-  {
-    title: "Бизнес-ланч",
-    image: businnesdinner,
-    oldPrice: 1990,
-    newPrice: 1990,
-    description: [
-      "Салат + суп + горячее",
-      "Напиток на выбор",
-      "Обслуживание за 45 минут",
-      "Бесплатный Wi-Fi",
-    ],
-    badge: "Быстро",
-    peopleCount: 1,
-    perPerson: true,
-  },
-];
+const fetchOffers = async () => {
+  try {
+    const { data } = await axios.get(
+      "http://localhost:8000/api/v1/offers/offers/",
+      {
+        Authorization: `Bearer ${tokenJWT}`,
+      }
+    );
+    offers.value = data.results;
+    console.log("fetched offers", offers.value);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+function getLocalized(item, field) {
+  const lang = locale.value.toLowerCase();
+  return item[`${field}_${lang}`] || item[`${field}_ru`]; // fallback to ru
+}
 
 onMounted(() => {
   AOS.init({
@@ -59,6 +33,7 @@ onMounted(() => {
     once: true,
   });
 
+  fetchOffers();
   // Обновим AOS если данные могли загружаться позже
   AOS.refresh();
 });
@@ -83,14 +58,14 @@ onMounted(() => {
         <OfferCard
           v-for="(offer, index) in offers"
           :key="index"
-          :title="offer.title"
+          :title="getLocalized(offer, 'title')"
           :image="offer.image"
-          :oldPrice="offer.oldPrice"
-          :newPrice="offer.newPrice"
-          :description="offer.description"
+          :oldPrice="Number(offer.old_price)"
+          :newPrice="Number(offer.new_price)"
+          :description="offer.items"
           :badge="offer.badge"
-          :peopleCount="offer.peopleCount"
-          :perPerson="offer.perPerson"
+          :peopleCount="offer.people_count"
+          :perPerson="offer.per_person"
           :dataAos="index % 2 === 0 ? 'fade-up' : 'fade-down'"
         />
       </div>

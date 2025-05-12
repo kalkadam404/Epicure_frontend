@@ -14,7 +14,7 @@
         {{ $t("sign_in_mini") }}
       </p>
     </div>
-    <form @submit.prevent="login" class="w-full flex flex-col gap-4">
+    <form @submit.prevent="signin" class="w-full flex flex-col gap-4">
       <div>
         <label for="username" class="block text-gray-700 font-medium">{{
           $t("inputs.phone_number")
@@ -27,6 +27,12 @@
           placeholder="+7 (___) ___-__-__"
           class="w-full p-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
         />
+        <p
+          v-if="validationErrors.phone_number"
+          class="text-red-500 text-sm mt-1"
+        >
+          {{ validationErrors.phone_number[0] }}
+        </p>
       </div>
       <div>
         <div class="flex justify-between items-center">
@@ -44,6 +50,9 @@
             :placeholder="$t('inputs.your_password')"
             class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
           />
+          <p v-if="validationErrors.password" class="text-red-500 text-sm mt-1">
+            {{ validationErrors.password[0] }}
+          </p>
           <img
             src="../assets/eye.svg"
             class="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
@@ -63,7 +72,6 @@
       </div>
       <div class="flex flex-col gap-[22px]">
         <button
-          @click="emit('closeLoginModal')"
           type="submit"
           class="w-full py-3 mt-4 bg-black text-white font-semibold rounded-md hover:bg-gray-500 transition duration-200"
         >
@@ -102,31 +110,64 @@
 import { ref } from "vue";
 import axios from "axios";
 const emit = defineEmits(["closeLoginModal", "toggleToRegister"]);
-
 const phone_number = ref("");
 const password = ref("");
-
+const validationErrors = ref({});
 const userStore = useUserStore();
+const authStore = useAuthStore();
+const error = ref(null);
+const success = ref(false);
 
-const login = async () => {
+// const signin = async () => {
+//   await authStore.auth({
+//     phone_number: phone_number.value,
+//     password: password.value,
+//   });
+// };
+
+const signin = async () => {
+  error.value = null;
+  success.value = false;
+  validationErrors.value = {};
+
   try {
-    const response = await axios.post(
-      "http://0.0.0.0:8000/api/v1/users/token/obtain/",
-      {
-        phone_number: phone_number.value,
-        password: password.value,
-      }
-    );
+    await authStore.auth({
+      phone_number: phone_number.value,
+      password: password.value,
+    });
 
-    const accessToken = response.data.access;
-    userStore.login(phone_number.value, accessToken); // авторизация через store
+    success.value = true;
+    emit("closeLoginModal");
+  } catch (err) {
+    console.error("Login error:", err);
 
-    emit("closeLoginModal"); // закрываем модалку
-  } catch (error) {
-    console.error("Login failed:", error.response?.data || error);
-    alert("Неверный логин или пароль"); // можно добавить alert
+    if (err?.status === 400) {
+      validationErrors.value = err.response.data; // Здесь уже лежат ошибки от Django
+    } else {
+      error.value = "Что-то пошло не так. Попробуйте позже.";
+    }
   }
 };
+
+// const login = async () => {
+//   try {
+//     const response = await axios.post(
+//       "http://0.0.0.0:8000/api/v1/users/token/obtain/",
+//       {
+//         phone_number: phone_number.value,
+//         password: password.value,
+//       }
+//     );
+
+//     const accessToken = response.data.access;
+//     userStore.login(phone_number.value, accessToken); // авторизация через store
+
+//     emit("closeLoginModal"); // закрываем модалку
+//   } catch (error) {
+//     console.error("Login failed:", error.response?.data || error);
+//     alert("Неверный логин или пароль"); // можно добавить alert
+//   }
+// };
 const loginWithGoogle = () => {
   window.location.href =
     "http://localhost:8000/api/v1/users/accounts/google/login/";

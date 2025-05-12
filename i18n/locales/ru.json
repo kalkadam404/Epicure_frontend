@@ -28,6 +28,9 @@
   "restaurant": "Ресторан",
   "restaurants": "Рестораны",
   "restaurantIn": "Рестораны в Алматы",
+  "noRestaurants": "Нет ресторанов",
+  "noRestaurantsInCity": "В этом городе нет ресторанов",
+  "loading": "Загрузка",
   "offers_section": {
     "title": "Специальные предложения",
     "description": "Эксклюзивные пакеты и акции для незабываемых моментов в нашем ресторане",

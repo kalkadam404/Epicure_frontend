@@ -28,6 +28,9 @@
   "restaurant": "Restaurant",
   "restaurants": "Restaurants",
   "restaurantIn": "Restaurants in Almaty",
+  "noRestaurants": "No restaurants",
+  "noRestaurantsInCity": "No restaurants in city",
+  "loading": "Loading",
   "offers_section": {
     "title": "Special Offers",
     "description": "Exclusive packages and promotions for unforgettable moments in our restaurant",

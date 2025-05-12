@@ -1,9 +1,5 @@
 <script setup>
 defineProps({
-  id: {
-    type: Number,
-    required: true
-  },
   title: {
     type: String,
     required: true,
@@ -43,19 +39,26 @@ defineProps({
   restaurant: {
     type: String,
     default: "",
-  }
+  },
 });
-
-const emit = defineEmits(['click']);
+import { useI18n } from "vue-i18n";
+const { locale } = useI18n();
+const emit = defineEmits(["click"]);
 
 const navigateToDetails = () => {
-  emit('click');
+  emit("click");
 };
 
-// Форматирование цены
-const formatPrice = (price) => {
-  return new Intl.NumberFormat('ru-RU').format(price);
-};
+function getLocalized(item, field) {
+  const lang = locale.value.toLowerCase();
+  return item[`${field}_${lang}`] || item[`${field}_ru`]; // fallback to ru
+}
+
+function pluralize(count) {
+  if (count === 1) return "персону";
+  if ([2, 3, 4].includes(count)) return "персоны";
+  return "персон";
+}
 </script>
 
 <template>
@@ -65,11 +68,7 @@ const formatPrice = (price) => {
     @click="navigateToDetails"
   >
     <div class="relative">
-      <img
-        :src="image"
-        :alt="title"
-        class="w-full h-56 object-cover"
-      />
+      <img :src="image" :alt="title" class="w-full h-56 object-cover" />
       <div
         v-if="badge"
         class="absolute top-4 right-4 bg-black text-white text-sm font-medium px-3 py-1 rounded-full"
@@ -79,24 +78,35 @@ const formatPrice = (price) => {
     </div>
 
     <div class="p-6">
-      <div v-if="restaurant" class="text-sm text-gray-500 mb-2">{{ restaurant }}</div>
+      <div v-if="restaurant" class="text-sm text-gray-500 mb-2">
+        {{ restaurant }}
+      </div>
       <h3 class="text-xl font-bold mb-4">{{ title }}</h3>
 
-      <div class="flex justify-between items-center mb-4">
-        <div class="flex items-center">
-          <span class="text-gray-500 line-through mr-2">{{ formatPrice(oldPrice) }} ₸</span>
-          <span class="text-lg font-bold">{{ formatPrice(newPrice) }} ₸</span>
-        </div>
-        <div class="flex items-center">
-          <span class="text-sm text-gray-500">
-            {{ peopleCount }} {{ $t("general.person", peopleCount) }}
-            <span v-if="perPerson">{{ $t("general.per_person") }}</span>
-          </span>
-        </div>
+      <div class="flex items-center space-x-2 mb-4">
+        <span
+          v-if="oldPrice && oldPrice > newPrice"
+          class="text-gray-500 line-through"
+        >
+          {{ oldPrice }} ₸
+        </span>
+        <span class="text-black font-bold text-xl">{{ newPrice }} ₸</span>
+        <span class="text-gray-700 text-sm">
+          /
+          {{
+            perPerson
+              ? "на персону"
+              : `на ${peopleCount} ${pluralize(peopleCount)}`
+          }}
+        </span>
       </div>
 
       <ul class="space-y-2 mb-6">
-        <li v-for="(item, index) in description" :key="index" class="flex items-start">
+        <li
+          v-for="(item, index) in description"
+          :key="index"
+          class="flex items-start"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5"
@@ -111,14 +121,16 @@ const formatPrice = (price) => {
               d="M5 13l4 4L19 7"
             />
           </svg>
-          <span class="text-gray-700">{{ item }}</span>
+          <span class="text-gray-700">{{
+            getLocalized(item, "description")
+          }}</span>
         </li>
       </ul>
 
       <button
         class="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors"
       >
-        {{ $t("buttons.more_details") }}
+        {{ $t("buttons.book_table") }}
       </button>
     </div>
   </div>
