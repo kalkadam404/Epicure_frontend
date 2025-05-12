@@ -1,5 +1,7 @@
 <script setup>
+import { ref, provide, onMounted } from "vue";
 import axios from "axios";
+
 const isLoginModalVisible = ref(false);
 const isRegisterModalVisible = ref(false);
 const isBookModalOpen = ref(false);
@@ -7,7 +9,9 @@ const isCityModalOpen = ref(false);
 const isDishInfoModalOpen = ref(false);
 const dishes = ref([]);
 
-import { provide } from "vue";
+const currentCityId = ref(null);
+const citySelectionCallback = ref(null);
+const selectedDish = ref(null);
 
 const openLoginModal = () => {
   isLoginModalVisible.value = true;
@@ -18,6 +22,7 @@ const closeLoginModal = () => {
   isLoginModalVisible.value = false;
   isRegisterModalVisible.value = false;
 };
+
 const toggleToRegister = () => {
   isLoginModalVisible.value = false;
   isRegisterModalVisible.value = true;
@@ -26,20 +31,32 @@ const toggleToRegister = () => {
 const openBookModal = () => {
   isBookModalOpen.value = true;
 };
+
 const closeBookModal = () => {
   isBookModalOpen.value = false;
 };
 
-const openCityModal = () => {
+const openCityModal = (cityId = null, callback = null) => {
+  currentCityId.value = cityId;
+  citySelectionCallback.value = callback;
   isCityModalOpen.value = true;
 };
+
 const closeCityModal = () => {
   isCityModalOpen.value = false;
+};
+
+const handleCitySelected = (city) => {
+  if (citySelectionCallback.value) {
+    citySelectionCallback.value(city);
+  }
+  closeCityModal();
 };
 
 const openDishInfoModal = () => {
   isDishInfoModalOpen.value = true;
 };
+
 const closeDishInfoModal = () => {
   isDishInfoModalOpen.value = false;
 };
@@ -48,9 +65,9 @@ provide("cityModal", {
   isCityModalOpen,
   openCityModal,
   closeCityModal,
+  currentCityId
 });
 
-const selectedDish = ref(null);
 provide("dishInfoModal", {
   isDishInfoModalOpen,
   openDishInfoModal,
@@ -60,8 +77,7 @@ provide("dishInfoModal", {
 
 const handleReservationSubmit = (reservationData) => {
   console.log("Reservation submitted:", reservationData);
-  // Здесь позже будет Stripe
-  closeModal();
+  closeBookModal();
 };
 
 const fetchDishes = async () => {
@@ -121,7 +137,11 @@ onMounted(() => {
 
         <transition name="scale-fade">
           <div class="relative z-50">
-            <CityModal @closeCityModal="closeCityModal" />
+            <CityModal 
+              @closeCityModal="closeCityModal" 
+              @citySelected="handleCitySelected"
+              :currentCityId="currentCityId"
+            />
           </div>
         </transition>
       </div>
@@ -139,7 +159,7 @@ onMounted(() => {
 
         <transition name="scale-fade">
           <div class="relative z-50">
-            <BookModal
+            <BookModal 
               @closeBookModal="closeBookModal"
               :dishes="dishes"
               @submit="handleReservationSubmit"
@@ -194,7 +214,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* затемнение */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0s ease;
@@ -208,7 +227,6 @@ onMounted(() => {
   opacity: 1;
 }
 
-/* анимация появления модалки */
 .scale-fade-enter-active,
 .scale-fade-leave-active {
   transition: all 0.3s ease;
