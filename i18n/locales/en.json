@@ -112,6 +112,9 @@
     "contact_description": "If you have any questions or suggestions, please feel free to contact us in any convenient way",
     "address": "Tole Bi Street, 59, Almaty"
   },
+  "profile": {
+    "title": "Profile"
+  },
   "our_team": {
     "chef": "Chef",
     "manager": "Customer Service Manager",

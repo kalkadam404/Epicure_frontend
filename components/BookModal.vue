@@ -27,7 +27,7 @@
 
         <!-- Индикатор прогресса -->
         <div class="flex items-center mb-4">
-          <div v-for="i in 4" :key="i" class="flex items-center">
+          <div v-for="i in 5" :key="i" class="flex items-center">
             <div
               :class="`rounded-full w-8 h-8 flex items-center justify-center text-sm font-medium ${
                 step >= i ? 'bg-blue-600 text-white' : 'bg-gray-200'
@@ -36,7 +36,7 @@
               {{ i }}
             </div>
             <div
-              v-if="i < 4"
+              v-if="i < 5"
               :class="`h-1 w-12 mx-1 ${
                 step > i ? 'bg-blue-600' : 'bg-gray-200'
               }`"
@@ -50,11 +50,93 @@
         </h3>
       </div>
 
-      <!-- Шаг 1: Дата, время и количество гостей -->
+      <!-- Шаг 1: Выбор ресторана -->
       <div v-if="step === 1" class="space-y-4">
+        <!-- Выбор города -->
+        <div class="mb-4">
+          <label class="block mb-2 font-medium">Выберите город</label>
+          <select
+            v-model="selectedCity"
+            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option v-for="city in cities" :key="city" :value="city.name">
+              {{ city.name }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Список ресторанов -->
+        <div class="space-y-3">
+          <label class="block mb-2 font-medium">Выберите ресторан</label>
+          <div
+            v-for="restaurant in filteredRestaurants"
+            :key="restaurant.id"
+            :class="`flex items-center border rounded-lg p-3 cursor-pointer transition-colors ${
+              selectedRestaurant && selectedRestaurant.id === restaurant.id
+                ? 'border-blue-600 bg-blue-50'
+                : 'hover:bg-gray-50'
+            }`"
+            @click="selectRestaurant(restaurant)"
+          >
+            <div
+              class="w-20 h-20 mr-4 rounded-lg overflow-hidden flex-shrink-0"
+            >
+              <img
+                :src="restaurant.photo"
+                :alt="restaurant.name"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div>
+              <h4 class="font-medium text-lg">{{ restaurant.name }}</h4>
+              <p class="text-sm text-gray-500">{{ restaurant.city.name }}</p>
+              <div class="flex items-center mt-1">
+                <div class="flex items-center text-yellow-500">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                    />
+                  </svg>
+                  <span class="ml-1 text-sm">{{ restaurant.rating }}</span>
+                </div>
+                <span class="mx-2 text-gray-300">•</span>
+                <span class="text-sm text-gray-500">{{
+                  restaurant.description_ru
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Кнопки навигации -->
+        <div class="flex justify-between items-center pt-4">
+          <button @click="close" class="text-gray-500 hover:text-gray-700">
+            Отмена
+          </button>
+          <button
+            :disabled="!selectedRestaurant"
+            @click="nextStep"
+            :class="`px-4 py-2 rounded-lg font-medium transition-colors ${
+              selectedRestaurant
+                ? 'bg-blue-600 text-white hover:bg-blue-700'
+                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+            }`"
+          >
+            Далее
+          </button>
+        </div>
+      </div>
+
+      <!-- Шаг 2: Дата, время и количество гостей -->
+      <div v-else-if="step === 2" class="space-y-4">
         <!-- Календарь -->
         <div>
-          <!-- <label class="block mb-2 font-medium">Выберите дату</label> -->
+          <label class="block mb-2 font-medium">Выберите дату</label>
           <div class="border rounded-lg p-4">
             <div class="flex justify-between items-center mb-4">
               <button
@@ -133,89 +215,10 @@
           </div>
         </div>
 
-        <!-- Выбор времени -->
-        <!-- <div>
-          <label class="block mb-2 font-medium">Выберите время</label>
-          <div class="grid grid-cols-4 gap-2">
-            <button
-              v-for="time in availableTimes"
-              :key="time"
-              :class="`py-2 px-3 border rounded text-sm font-medium
-                      ${
-                        selectedTime === time
-                          ? 'bg-blue-600 text-white border-blue-600'
-                          : 'hover:bg-gray-50'
-                      }`"
-              @click="selectTime(time)"
-            >
-              {{ time }}
-            </button>
-          </div>
-        </div> -->
-
-        <!-- Количество гостей -->
-        <!-- <div>
-          <label class="block mb-2 font-medium">Количество гостей</label>
-          <div class="flex items-center border rounded-lg overflow-hidden">
-            <button
-              @click="decrementGuests"
-              :disabled="form.guests <= 1"
-              :class="`p-3 ${
-                form.guests <= 1
-                  ? 'text-gray-300'
-                  : 'text-gray-600 hover:bg-gray-100'
-              }`"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M20 12H4"
-                />
-              </svg>
-            </button>
-            <div class="flex-1 text-center text-lg font-medium">
-              {{ form.guests }}
-            </div>
-            <button
-              @click="incrementGuests"
-              :disabled="form.guests >= 10"
-              :class="`p-3 ${
-                form.guests >= 10
-                  ? 'text-gray-300'
-                  : 'text-gray-600 hover:bg-gray-100'
-              }`"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
-            </button>
-          </div>
-          <p class="text-sm text-gray-500 mt-1">Максимум 10 гостей</p>
-        </div> -->
-
         <!-- Кнопки навигации -->
         <div class="flex justify-between items-center pt-4">
-          <button @click="close" class="text-gray-500 hover:text-gray-700">
-            Отмена
+          <button @click="prevStep" class="text-gray-500 hover:text-gray-700">
+            Назад
           </button>
           <button
             :disabled="!isStep1Valid"
@@ -231,7 +234,7 @@
         </div>
       </div>
 
-      <div v-if="step === 2" class="space-y-4">
+      <div v-else-if="step === 3" class="space-y-4">
         <!-- Выбор времени -->
         <div>
           <label class="block mb-2 font-medium">Выберите время</label>
@@ -313,8 +316,8 @@
 
         <!-- Кнопки навигации -->
         <div class="flex justify-between items-center pt-4">
-          <button @click="close" class="text-gray-500 hover:text-gray-700">
-            Отмена
+          <button @click="prevStep" class="text-gray-500 hover:text-gray-700">
+            Назад
           </button>
           <button
             :disabled="!isStep1Valid"
@@ -330,8 +333,8 @@
         </div>
       </div>
 
-      <!-- Шаг 2: Выбор блюд -->
-      <div v-else-if="step === 3">
+      <!-- Шаг 4: Выбор блюд -->
+      <div v-else-if="step === 4">
         <div class="mb-4">
           <label class="block mb-2 font-medium"
             >Выберите хотя бы одно блюдо</label
@@ -405,12 +408,42 @@
         </div>
       </div>
 
-      <!-- Шаг 3: Подтверждение -->
-      <div v-else-if="step === 4">
+      <!-- Шаг 5: Подтверждение -->
+      <div v-else-if="step === 5">
         <div class="bg-gray-50 p-4 rounded-lg mb-4">
           <h3 class="text-xl font-semibold mb-4">Детали бронирования</h3>
 
           <div class="space-y-3">
+            <div class="flex items-start">
+              <div
+                class="min-w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 text-blue-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                  />
+                </svg>
+              </div>
+              <div>
+                <div class="font-medium">Ресторан</div>
+                <div class="text-gray-600">
+                  {{ selectedRestaurant ? selectedRestaurant.name : "—" }}
+                </div>
+                <div class="text-sm text-gray-500">
+                  {{ selectedRestaurant ? selectedRestaurant.address : "—" }}
+                </div>
+              </div>
+            </div>
+
             <div class="flex items-start">
               <div
                 class="min-w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3"
@@ -536,16 +569,19 @@ useHead({
   ],
 });
 import axios from "axios";
-import Stripe from "stripe";
 import { ref, reactive, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
-// import { loadStripe } from "@stripe/stripe-js";
-// const stripePromise = loadStripe(useRuntimeConfig().STRIPE_PUBLISHABLE_KEY);
 const { locale } = useI18n();
 const selectedDishes = ref([]);
 const step = ref(1);
 
-const stepTitles = ["Выбор даты и времени", "Выбор блюд", "Подтверждение"];
+const stepTitles = [
+  "Выбор ресторана",
+  "Выбор даты",
+  "Время и гости",
+  "Выбор блюд",
+  "Подтверждение",
+];
 
 // Данные для календаря
 const currentDate = ref(new Date());
@@ -578,32 +614,6 @@ const availableTimes = [
   "21:00",
 ];
 
-const props = defineProps({
-  dishes: {
-    type: Array,
-    default: () => [
-      {
-        id: 1,
-        name_ru: "Борщ",
-        name_en: "Borsch",
-        description_ru: "Традиционный украинский суп",
-      },
-      {
-        id: 2,
-        name_ru: "Цезарь с курицей",
-        name_en: "Chicken Caesar",
-        description_ru: "Классический салат",
-      },
-      {
-        id: 3,
-        name_ru: "Паста Карбонара",
-        name_en: "Pasta Carbonara",
-        description_ru: "Итальянская паста с соусом",
-      },
-    ],
-  },
-});
-
 const emit = defineEmits(["closeBookModal"]);
 const close = () => emit("closeBookModal");
 
@@ -630,6 +640,30 @@ const currentMonthName = computed(() => {
   ];
   return months[currentMonth.value];
 });
+
+const cities = ref([]);
+const selectedCity = ref("Алматы");
+const selectedRestaurant = ref(null);
+
+// Данные для ресторанов
+const restaurants = ref([]);
+
+// Фильтрация ресторанов по выбранному городу
+const filteredRestaurants = computed(() => {
+  if (!restaurants.value || !Array.isArray(restaurants.value)) {
+    return [];
+  }
+
+  return restaurants.value.filter(
+    (restaurant) =>
+      restaurant.city && restaurant.city.name === selectedCity.value
+  );
+});
+
+// Функция для выбора ресторана
+const selectRestaurant = (restaurant) => {
+  selectedRestaurant.value = restaurant;
+};
 
 // Вычисляемое свойство для всех дней в календаре
 const calendarDays = computed(() => {
@@ -766,7 +800,7 @@ const decrementGuests = () => {
 };
 
 const nextStep = () => {
-  if (step.value < 4) step.value++;
+  if (step.value < 5) step.value++;
 };
 
 const prevStep = () => {
@@ -819,6 +853,38 @@ const calculateTotal = () => {
   return basePrice + selectedDishes.value.length * dishPrice;
 };
 
+const fetchRestaurants = async () => {
+  try {
+    const { data } = await axios.get(
+      "http://localhost:8000/api/v1/restaurants/"
+    );
+    restaurants.value = data.results;
+    console.log("restaurants", restaurants.value);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const fetchCities = async () => {
+  try {
+    const { data } = await axios.get("http://localhost:8000/api/v1/cities/");
+    cities.value = data.results;
+    console.log("cities", cities.value);
+  } catch (err) {
+    console.error("Ошибка загрузки городов:", err);
+  }
+};
+
+const createReservation = async () => {
+  try {
+    const data = await axios.post(
+      "http://localhost:8000/api/v1/room/reservations/"
+    );
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const tokenJWT = useCookie("token_jwt");
 const config = useRuntimeConfig();
 console.log("JWT Token:", tokenJWT.value);
@@ -862,45 +928,6 @@ const redirectToCheckout = async () => {
   }
 };
 
-// try {
-
-// const response = await axios.post(
-//   "http://0.0.0.0:8000/api/v1/create-checkout-session/",
-//   {
-//     reservation: {
-//       datetime: form.datetime,
-//       guests: form.guests,
-//     },
-//     selectedDishes: selectedDishes.value.map((dish) => dish.id),
-//   }
-// );
-
-// const session = response.data;
-
-// const result = await stripe.redirectToCheckout({
-//   sessionId: session.id,
-// });
-
-// if (result.error) {
-//   console.error(result.error.message);
-// }
-
-// console.log("Перенаправление на оплату:", {
-//   datetime: form.datetime,
-//   guests: form.guests,
-//   dishes: selectedDishes.value.map((dish) => dish.id),
-// });
-
-// // Временное решение, пока нет реального Stripe
-// alert("Перенаправление на страницу оплаты...");
-// } catch (error) {
-// console.error("Ошибка при создании сессии оплаты:", error);
-// alert(
-//   "Произошла ошибка при переходе к оплате. Пожалуйста, попробуйте еще раз."
-// );
-// }
-
-// Инициализация при загрузке компонента
 onMounted(() => {
   // Устанавливаем текущую дату как выбранную по умолчанию
   selectDate(new Date());
@@ -908,5 +935,7 @@ onMounted(() => {
   if (availableTimes.length > 0) {
     selectTime(availableTimes[0]);
   }
+  fetchRestaurants();
+  fetchCities();
 });
 </script>
