@@ -2,7 +2,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   console.log("middleware auth_jwt.js");
 
   const tokenJWTCookie = useCookie("token_jwt");
-  console.log(tokenJWTCookie.value.access);
+  // console.log(tokenJWTCookie.value.access);
 
   if (!tokenJWTCookie.value) {
     return navigateTo("/", { redirectCode: 403 });

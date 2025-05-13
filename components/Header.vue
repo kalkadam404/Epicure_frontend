@@ -189,7 +189,7 @@
               class="flex items-center gap-4 bg-gradient-to-r from-gray-100 to-gray-50 rounded-full p-1 pl-3 pr-3 shadow-sm hover:shadow transition-all cursor-pointer"
             >
               <span class="font-medium text-gray-700">{{
-                userStore.phone_number
+                userStore.username
               }}</span>
               <div
                 class="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-md transition-transform"
@@ -230,7 +230,7 @@
               <div class="py-2 px-4 border-b border-gray-100">
                 <p class="text-sm text-gray-500">{{ $t("greeting") }},</p>
                 <p class="font-medium text-black">
-                  {{ userStore.phone_number }}
+                  {{ userStore.username }}
                 </p>
               </div>
               <NuxtLink
@@ -297,7 +297,7 @@
                         d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                       />
                     </svg>
-                    <span>{{ $t("logout") }}</span>
+                    <span @click="userStore.logout">{{ $t("logout") }}</span>
                   </div>
                 </button>
               </div>
@@ -310,10 +310,7 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
-import { useUserStore } from "~/stores/user";
-
-const userStore = useUserStore();
+const userStore = useAuthStore();
 const isUserMenuOpen = ref(false);
 const isLanguageMenuOpen = ref(false);
 const { locale, locales, setLocale } = useI18n();
@@ -367,7 +364,6 @@ const handleEscKey = (event) => {
 };
 
 onMounted(() => {
-  userStore.initialize();
   document.addEventListener("keydown", handleEscKey);
 });
 

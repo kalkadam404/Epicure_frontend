@@ -10,7 +10,6 @@ export const useRefreshToken = async (refresh) => {
   console.log("useRefreshToken()");
 
   try {
-    const options = {};
     const response = await axios.post(
       "http://localhost:8000/api/v1/users/token/refresh/",
       {

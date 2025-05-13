@@ -370,6 +370,7 @@
                   <p class="text-sm text-gray-500">
                     {{ getLocalized(dish, "description") || "Нет описания" }}
                   </p>
+                  <div class="text-end">{{ dish.price }}</div>
                 </div>
               </div>
               <button
@@ -527,7 +528,15 @@
 </template>
 
 <script setup>
+useHead({
+  script: [
+    {
+      src: "https://js.stripe.com/v3/",
+    },
+  ],
+});
 import axios from "axios";
+import Stripe from "stripe";
 import { ref, reactive, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 // import { loadStripe } from "@stripe/stripe-js";
@@ -810,46 +819,86 @@ const calculateTotal = () => {
   return basePrice + selectedDishes.value.length * dishPrice;
 };
 
-const redirectToCheckout = async () => {
-  try {
-    // const stripe = await stripePromise;
+const tokenJWT = useCookie("token_jwt");
+const config = useRuntimeConfig();
+console.log("JWT Token:", tokenJWT.value);
 
+const redirectToCheckout = async () => {
+  const stripe = window.Stripe(config.public.STRIPE_PUBLISHABLE_KEY);
+
+  try {
     const response = await axios.post(
-      "http://0.0.0.0:8000/api/v1/create-checkout-session/",
+      "http://localhost:8000/api/v1/payments/checkout/",
       {
-        reservation: {
-          datetime: form.datetime,
-          guests: form.guests,
+        reservation_id: 1,
+      },
+      {
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${tokenJWT.value.access}`,
         },
-        selectedDishes: selectedDishes.value.map((dish) => dish.id),
       }
     );
 
-    const session = response.data;
+    const sessionId = response.data.session_id;
+
+    if (!sessionId) {
+      console.error("Session ID отсутствует:", response.data);
+      return;
+    }
+
+    console.log("Redirecting with Session ID:", sessionId);
 
     // const result = await stripe.redirectToCheckout({
-    //   sessionId: session.id,
+    //   sessionId: sessionId,
     // });
+    window.location.href = response.data.checkout_url;
 
-    // if (result.error) {
-    //   console.error(result.error.message);
-    // }
-
-    console.log("Перенаправление на оплату:", {
-      datetime: form.datetime,
-      guests: form.guests,
-      dishes: selectedDishes.value.map((dish) => dish.id),
-    });
-
-    // Временное решение, пока нет реального Stripe
-    alert("Перенаправление на страницу оплаты...");
-  } catch (error) {
-    console.error("Ошибка при создании сессии оплаты:", error);
-    alert(
-      "Произошла ошибка при переходе к оплате. Пожалуйста, попробуйте еще раз."
-    );
+    if (result.error) {
+      console.error("Stripe redirect error:", result.error.message);
+    }
+  } catch (err) {
+    console.log("Error:", err);
   }
 };
+
+// try {
+
+// const response = await axios.post(
+//   "http://0.0.0.0:8000/api/v1/create-checkout-session/",
+//   {
+//     reservation: {
+//       datetime: form.datetime,
+//       guests: form.guests,
+//     },
+//     selectedDishes: selectedDishes.value.map((dish) => dish.id),
+//   }
+// );
+
+// const session = response.data;
+
+// const result = await stripe.redirectToCheckout({
+//   sessionId: session.id,
+// });
+
+// if (result.error) {
+//   console.error(result.error.message);
+// }
+
+// console.log("Перенаправление на оплату:", {
+//   datetime: form.datetime,
+//   guests: form.guests,
+//   dishes: selectedDishes.value.map((dish) => dish.id),
+// });
+
+// // Временное решение, пока нет реального Stripe
+// alert("Перенаправление на страницу оплаты...");
+// } catch (error) {
+// console.error("Ошибка при создании сессии оплаты:", error);
+// alert(
+//   "Произошла ошибка при переходе к оплате. Пожалуйста, попробуйте еще раз."
+// );
+// }
 
 // Инициализация при загрузке компонента
 onMounted(() => {

@@ -2,6 +2,8 @@
 import { ref, provide, onMounted } from "vue";
 import axios from "axios";
 
+const authStore = useAuthStore();
+
 const isLoginModalVisible = ref(false);
 const isRegisterModalVisible = ref(false);
 const isBookModalOpen = ref(false);
@@ -65,7 +67,7 @@ provide("cityModal", {
   isCityModalOpen,
   openCityModal,
   closeCityModal,
-  currentCityId
+  currentCityId,
 });
 
 provide("dishInfoModal", {
@@ -94,6 +96,7 @@ const fetchDishes = async () => {
 
 onMounted(() => {
   fetchDishes();
+  authStore.restoreSession();
 });
 </script>
 
@@ -137,8 +140,8 @@ onMounted(() => {
 
         <transition name="scale-fade">
           <div class="relative z-50">
-            <CityModal 
-              @closeCityModal="closeCityModal" 
+            <CityModal
+              @closeCityModal="closeCityModal"
               @citySelected="handleCitySelected"
               :currentCityId="currentCityId"
             />
@@ -159,7 +162,7 @@ onMounted(() => {
 
         <transition name="scale-fade">
           <div class="relative z-50">
-            <BookModal 
+            <BookModal
               @closeBookModal="closeBookModal"
               :dishes="dishes"
               @submit="handleReservationSubmit"

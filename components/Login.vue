@@ -149,25 +149,6 @@ const signin = async () => {
   }
 };
 
-// const login = async () => {
-//   try {
-//     const response = await axios.post(
-//       "http://0.0.0.0:8000/api/v1/users/token/obtain/",
-//       {
-//         phone_number: phone_number.value,
-//         password: password.value,
-//       }
-//     );
-
-//     const accessToken = response.data.access;
-//     userStore.login(phone_number.value, accessToken); // авторизация через store
-
-//     emit("closeLoginModal"); // закрываем модалку
-//   } catch (error) {
-//     console.error("Login failed:", error.response?.data || error);
-//     alert("Неверный логин или пароль"); // можно добавить alert
-//   }
-// };
 const loginWithGoogle = () => {
   window.location.href =
     "http://localhost:8000/api/v1/users/accounts/google/login/";

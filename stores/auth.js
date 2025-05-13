@@ -2,14 +2,15 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 import axios from "axios";
 export const useAuthStore = defineStore("auth", () => {
-  const userInfo = ref({
-    accessToken: "",
-    refreshToken: "",
-    email: "",
-    username: "",
-  });
+  const accessToken = ref("");
+  const refreshToken = ref("");
+  const email = ref("");
+  const username = ref("");
+  const phone_number = ref("");
 
   const tokenJWTCookie = useCookie("token_jwt");
+
+  const isLoggedIn = computed(() => !!accessToken.value);
 
   const signup = async (payload) => {
     try {
@@ -27,40 +28,75 @@ export const useAuthStore = defineStore("auth", () => {
 
   const auth = async (payload) => {
     try {
-      const response = await axios.post(
+      const { data } = await axios.post(
         "http://0.0.0.0:8000/api/v1/users/token/obtain/",
         payload
       );
-      userInfo.value = {
-        accessToken: response.data.access,
-        refreshToken: response.data.refresh,
-        email: "",
-        username: "",
-      };
-      console.log(response.data);
-      tokenJWTCookie.value = response.data;
-      localStorage.setItem(
-        "userTokens",
-        JSON.stringify({
-          token: userInfo.value.accessToken,
-          refToken: userInfo.value.refreshToken,
-        })
-      );
-      return response.data;
+
+      accessToken.value = data.access;
+      refreshToken.value = data.refresh;
+
+      // Сохраняем токены
+      tokenJWTCookie.value = data;
+
+      // Подгрузим профиль
+      await fetchUserProfile();
+
+      return data;
     } catch (err) {
-      console.log(err.response?.data);
-      throw err; // <-- выбрасывайте саму ошибку, а не err.response
+      console.error(err.response?.data);
+      throw err;
+    }
+  };
+
+  const fetchUserProfile = async () => {
+    if (!accessToken.value) return;
+    try {
+      const { data } = await axios.get("http://0.0.0.0:8000/api/v1/users/me/", {
+        headers: {
+          Authorization: `Bearer ${accessToken.value}`,
+        },
+      });
+
+      email.value = data.email;
+      username.value = data.username;
+      phone_number.value = data.phone_number;
+    } catch (err) {
+      console.error("Profile fetch error:", err);
+    }
+  };
+
+  const restoreSession = () => {
+    if (tokenJWTCookie.value) {
+      accessToken.value = tokenJWTCookie.value.access;
+      refreshToken.value = tokenJWTCookie.value.refresh;
+      fetchUserProfile();
     }
   };
 
   const logout = () => {
-    userInfo = {
-      accessToken: "",
-      refreshToken: "",
-      email: "",
-      username: "",
-    };
+    accessToken.value = "";
+    refreshToken.value = "";
+    email.value = "";
+    username.value = "";
+    phone_number.value = "";
+    tokenJWTCookie.value = null;
   };
 
-  return { signup, auth, logout, userInfo };
+  restoreSession();
+  return {
+    // state
+    accessToken,
+    refreshToken,
+    email,
+    username,
+    phone_number,
+    isLoggedIn,
+
+    // methods
+    signup,
+    auth,
+    logout,
+    restoreSession,
+  };
 });
