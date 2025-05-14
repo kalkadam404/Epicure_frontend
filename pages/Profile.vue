@@ -99,21 +99,21 @@
               class="w-full py-3 bg-black text-white font-medium rounded-lg hover:bg-gray-800 transition-colors"
               @click="openEditProfile"
             >
-              Редактировать профиль
+              {{ $t("editProfile") }}
             </button>
 
             <button
               class="w-full py-3 bg-white border border-gray-300 text-gray-800 font-medium rounded-lg hover:bg-gray-100 transition-colors"
               @click="openChangePassword"
             >
-              Изменить пароль
+              {{ $t("changePassword") }}
             </button>
 
             <button
               class="w-full py-3 bg-white border border-gray-400 text-gray-700 font-medium rounded-lg hover:bg-gray-100 hover:text-red-500 hover:border-red-500 transition-colors"
               @click="logout"
             >
-              Выйти
+              {{ $t("logout") }}
             </button>
           </div>
         </div>
@@ -144,37 +144,37 @@
           class="bg-white rounded-2xl shadow-lg p-8"
         >
           <h3 class="text-xl font-bold text-gray-800 mb-6">
-            Личная информация
+            {{ $t("personalInfo") }}
           </h3>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div>
-              <label class="block text-sm font-medium text-gray-500 mb-2"
-                >Имя пользователя</label
-              >
+              <label class="block text-sm font-medium text-gray-500 mb-2">{{
+                $t("inputs.username")
+              }}</label>
               <div class="text-lg text-gray-800">{{ user.username }}</div>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-500 mb-2"
-                >Телефон</label
-              >
+              <label class="block text-sm font-medium text-gray-500 mb-2">{{
+                $t("inputs.phone")
+              }}</label>
               <div class="text-lg text-gray-800">{{ user.phone_number }}</div>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-500 mb-2"
-                >Email</label
-              >
+              <label class="block text-sm font-medium text-gray-500 mb-2">{{
+                $t("inputs.email")
+              }}</label>
               <div class="text-lg text-gray-800">
                 {{ user.email || "Не указан" }}
               </div>
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-500 mb-2"
-                >Язык</label
-              >
+              <label class="block text-sm font-medium text-gray-500 mb-2">{{
+                $t("language")
+              }}</label>
               <div class="text-lg text-gray-800">
                 {{
                   languageNames[user.language] || user.language || "Не указан"
@@ -183,9 +183,9 @@
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-500 mb-2"
-                >Город</label
-              >
+              <label class="block text-sm font-medium text-gray-500 mb-2">{{
+                $t("inputs.city")
+              }}</label>
               <div class="text-lg text-gray-800">
                 {{ user.city_details ? user.city_details.name : "Не указан" }}
               </div>
@@ -198,7 +198,9 @@
           v-else-if="activeTab === 'orders'"
           class="bg-white rounded-2xl shadow-lg p-8"
         >
-          <h3 class="text-xl font-bold text-gray-800 mb-6">История заказов</h3>
+          <h3 class="text-xl font-bold text-gray-800 mb-6">
+            {{ $t("orderHistory") }}
+          </h3>
 
           <div class="text-center py-8 text-gray-500">
             <svg
@@ -215,11 +217,11 @@
                 d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
               ></path>
             </svg>
-            <p class="text-lg">У вас пока нет заказов</p>
+            <p class="text-lg">{{ $t("noOrders") }}</p>
             <button
               class="mt-4 px-6 py-2 bg-black text-white font-medium rounded-lg hover:bg-gray-800 transition-colors"
             >
-              Перейти в меню
+              {{ $t("goToMenu") }}
             </button>
           </div>
         </div>
@@ -229,7 +231,9 @@
           v-else-if="activeTab === 'favorites'"
           class="bg-white rounded-2xl shadow-lg p-8"
         >
-          <h3 class="text-xl font-bold text-gray-800 mb-6">Избранные блюда</h3>
+          <h3 class="text-xl font-bold text-gray-800 mb-6">
+            {{ $t("favoriteDishes") }}
+          </h3>
 
           <div class="text-center py-8 text-gray-500">
             <svg
@@ -246,11 +250,11 @@
                 d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
               ></path>
             </svg>
-            <p class="text-lg">У вас пока нет избранных блюд</p>
+            <p class="text-lg">{{ $t("noFavorites") }}</p>
             <button
               class="mt-4 px-6 py-2 bg-black text-white font-medium rounded-lg hover:bg-gray-800 transition-colors"
             >
-              Перейти в меню
+              {{ $t("goToMenu") }}
             </button>
           </div>
         </div>
@@ -285,15 +289,15 @@
         </button>
 
         <h2 class="text-xl font-bold text-gray-800 mb-6">
-          Редактировать профиль
+          {{ $t("editProfile") }}
         </h2>
 
         <form @submit.prevent="updateProfile">
           <div class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1"
-                >Имя пользователя</label
-              >
+              <label class="block text-sm font-medium text-gray-700 mb-1">{{
+                $t("inputs.username")
+              }}</label>
               <input
                 v-model="editedUser.username"
                 type="text"
@@ -303,9 +307,9 @@
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1"
-                >Email</label
-              >
+              <label class="block text-sm font-medium text-gray-700 mb-1">{{
+                $t("inputs.email")
+              }}</label>
               <input
                 v-model="editedUser.email"
                 type="email"
@@ -314,14 +318,14 @@
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1"
-                >Город</label
-              >
+              <label class="block text-sm font-medium text-gray-700 mb-1">{{
+                $t("inputs.city")
+              }}</label>
               <select
                 v-model="editedUser.city"
                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
               >
-                <option value="">Выберите город</option>
+                <option value="">{{ $t("buttons.select_city") }}</option>
                 <option v-for="city in cities" :key="city.id" :value="city.id">
                   {{ city.name }}
                 </option>
@@ -329,9 +333,9 @@
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1"
-                >Язык</label
-              >
+              <label class="block text-sm font-medium text-gray-700 mb-1">{{
+                $t("language")
+              }}</label>
               <select
                 v-model="editedUser.language"
                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
@@ -353,7 +357,7 @@
               @click="showEditProfileModal = false"
               class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
             >
-              Отмена
+              {{ $t("buttons.cancel") }}
             </button>
             <button
               type="submit"
@@ -381,9 +385,9 @@
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                Сохранение...
+                {{ $t("saving") }}
               </span>
-              <span v-else>Сохранить</span>
+              <span v-else>{{ $t("save") }}</span>
             </button>
           </div>
         </form>
@@ -418,14 +422,16 @@
           </svg>
         </button>
 
-        <h2 class="text-xl font-bold text-gray-800 mb-6">Изменить пароль</h2>
+        <h2 class="text-xl font-bold text-gray-800 mb-6">
+          {{ $t("changePassword") }}
+        </h2>
 
         <form @submit.prevent="changePassword">
           <div class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1"
-                >Текущий пароль</label
-              >
+              <label class="block text-sm font-medium text-gray-700 mb-1">{{
+                $t("currentPassword")
+              }}</label>
               <input
                 v-model="passwordData.current_password"
                 type="password"
@@ -445,9 +451,9 @@
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1"
-                >Новый пароль</label
-              >
+              <label class="block text-sm font-medium text-gray-700 mb-1">{{
+                $t("newPassword")
+              }}</label>
               <input
                 v-model="passwordData.new_password"
                 type="password"
@@ -467,9 +473,9 @@
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1"
-                >Подтверждение нового пароля</label
-              >
+              <label class="block text-sm font-medium text-gray-700 mb-1">{{
+                $t("confirmNewPassword")
+              }}</label>
               <input
                 v-model="passwordData.confirm_password"
                 type="password"
@@ -495,7 +501,7 @@
               @click="showChangePasswordModal = false"
               class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
             >
-              Отмена
+              {{ $t("buttons.cancel") }}
             </button>
             <button
               type="submit"
@@ -523,9 +529,9 @@
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                Сохранение...
+                {{ $t("saving") }}
               </span>
-              <span v-else>Сохранить</span>
+              <span v-else>{{ $t("save") }}</span>
             </button>
           </div>
         </form>
@@ -581,12 +587,15 @@ import { ref, computed, onMounted } from "vue";
 import axios from "axios";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 definePageMeta({
   middleware: ["auth-jwt"],
 });
 
 // Состояние пользователя
+const userStore = useAuthStore();
 const user = ref({});
 const loading = ref(true);
 const tokenJWTCookie = useCookie("token_jwt");
@@ -594,9 +603,9 @@ const error = ref(null);
 
 // Вкладки для профиля
 const tabs = [
-  { id: "personal", name: "Личная информация" },
-  { id: "orders", name: "История заказов" },
-  { id: "favorites", name: "Избранное" },
+  { id: "personal", name: t("personalInfo") },
+  { id: "orders", name: t("orderHistory") },
+  { id: "favorites", name: t("favorites") },
 ];
 const activeTab = ref("personal");
 
@@ -801,8 +810,8 @@ const changePassword = async () => {
 };
 
 const logout = () => {
-  tokenJWTCookie.value = null;
-  navigateTo("/login");
+  userStore.logout();
+  navigateTo("/");
 };
 
 onMounted(() => {

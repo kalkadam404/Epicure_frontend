@@ -178,7 +178,7 @@
                 class="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-md transition-transform"
               >
                 <img
-                  src="../assets/user_def.png"
+                  :src="userStore.user.image_url"
                   alt="Профиль"
                   class="w-full h-full object-cover"
                 />
@@ -297,7 +297,7 @@ const userStore = useAuthStore();
 const isUserMenuOpen = ref(false);
 const isLanguageMenuOpen = ref(false);
 const { locale, locales, setLocale } = useI18n();
-import Notifications from '~/components/Notifications.vue';
+import Notifications from "~/components/Notifications.vue";
 
 const currentLanguage = computed({
   get: () => locale.value,
@@ -349,6 +349,9 @@ const handleEscKey = (event) => {
 
 onMounted(() => {
   document.addEventListener("keydown", handleEscKey);
+  if (!userStore.user) {
+    // userStore.fetchUserProfile();
+  }
 });
 
 onBeforeUnmount(() => {

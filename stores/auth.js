@@ -7,6 +7,8 @@ export const useAuthStore = defineStore("auth", () => {
   const email = ref("");
   const username = ref("");
   const phone_number = ref("");
+  const user = ref({});
+  const loading = ref(true);
 
   const tokenJWTCookie = useCookie("token_jwt");
 
@@ -58,11 +60,14 @@ export const useAuthStore = defineStore("auth", () => {
         },
       });
 
+      user.value = data;
       email.value = data.email;
       username.value = data.username;
       phone_number.value = data.phone_number;
     } catch (err) {
       console.error("Profile fetch error:", err);
+    } finally {
+      loading.value = false;
     }
   };
 
@@ -92,6 +97,8 @@ export const useAuthStore = defineStore("auth", () => {
     username,
     phone_number,
     isLoggedIn,
+    loading,
+    user,
 
     // methods
     signup,

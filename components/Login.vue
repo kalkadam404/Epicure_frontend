@@ -113,17 +113,9 @@ const emit = defineEmits(["closeLoginModal", "toggleToRegister"]);
 const phone_number = ref("");
 const password = ref("");
 const validationErrors = ref({});
-const userStore = useUserStore();
 const authStore = useAuthStore();
 const error = ref(null);
 const success = ref(false);
-
-// const signin = async () => {
-//   await authStore.auth({
-//     phone_number: phone_number.value,
-//     password: password.value,
-//   });
-// };
 
 const signin = async () => {
   error.value = null;
@@ -151,6 +143,6 @@ const signin = async () => {
 
 const loginWithGoogle = () => {
   window.location.href =
-    "http://localhost:8000/api/v1/users/accounts/google/login/";
+    "http://localhost:8000/api/v1/users/accounts/google/login/callback";
 };
 </script>

@@ -6,7 +6,7 @@
       <!-- Заголовок и индикатор прогресса -->
       <div class="mb-6">
         <div class="flex justify-between items-center mb-2">
-          <h2 class="text-2xl font-bold">Бронирование</h2>
+          <h2 class="text-2xl font-bold">{{ $t("booking") }}</h2>
           <button @click="close" class="text-gray-400 hover:text-gray-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -30,16 +30,14 @@
           <div v-for="i in 5" :key="i" class="flex items-center">
             <div
               :class="`rounded-full w-8 h-8 flex items-center justify-center text-sm font-medium ${
-                step >= i ? 'bg-blue-600 text-white' : 'bg-gray-200'
+                step >= i ? 'bg-black text-white' : 'bg-gray-200'
               }`"
             >
               {{ i }}
             </div>
             <div
               v-if="i < 5"
-              :class="`h-1 w-12 mx-1 ${
-                step > i ? 'bg-blue-600' : 'bg-gray-200'
-              }`"
+              :class="`h-1 w-12 mx-1 ${step > i ? 'bg-black' : 'bg-gray-200'}`"
             ></div>
           </div>
         </div>
@@ -54,10 +52,12 @@
       <div v-if="step === 1" class="space-y-4">
         <!-- Выбор города -->
         <div class="mb-4">
-          <label class="block mb-2 font-medium">Выберите город</label>
+          <label class="block mb-2 font-medium">{{
+            $t("buttons.select_city")
+          }}</label>
           <select
             v-model="selectedCity"
-            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
           >
             <option v-for="city in cities" :key="city" :value="city.name">
               {{ city.name }}
@@ -67,13 +67,15 @@
 
         <!-- Список ресторанов -->
         <div class="space-y-3">
-          <label class="block mb-2 font-medium">Выберите ресторан</label>
+          <label class="block mb-2 font-medium">{{
+            $t("select_restaurant")
+          }}</label>
           <div
             v-for="restaurant in filteredRestaurants"
             :key="restaurant.id"
             :class="`flex items-center border rounded-lg p-3 cursor-pointer transition-colors ${
               selectedRestaurant && selectedRestaurant.id === restaurant.id
-                ? 'border-blue-600 bg-blue-50'
+                ? 'border-black bg-blue-50'
                 : 'hover:bg-gray-50'
             }`"
             @click="selectRestaurant(restaurant)"
@@ -116,18 +118,18 @@
         <!-- Кнопки навигации -->
         <div class="flex justify-between items-center pt-4">
           <button @click="close" class="text-gray-500 hover:text-gray-700">
-            Отмена
+            {{ $t("buttons.cancel") }}
           </button>
           <button
             :disabled="!selectedRestaurant"
             @click="nextStep"
             :class="`px-4 py-2 rounded-lg font-medium transition-colors ${
               selectedRestaurant
-                ? 'bg-blue-600 text-white hover:bg-blue-700'
+                ? 'bg-gray-900 text-white hover:bg-gray-950'
                 : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`"
           >
-            Далее
+            {{ $t("buttons.next") }}
           </button>
         </div>
       </div>
@@ -136,7 +138,7 @@
       <div v-else-if="step === 2" class="space-y-4">
         <!-- Календарь -->
         <div>
-          <label class="block mb-2 font-medium">Выберите дату</label>
+          <label class="block mb-2 font-medium">{{ $t("select_date") }}</label>
           <div class="border rounded-lg p-4">
             <div class="flex justify-between items-center mb-4">
               <button
@@ -202,9 +204,9 @@
                      ${day.disabled ? 'text-gray-300 cursor-not-allowed' : ''}
                      ${
                        isSelectedDate(day.date)
-                         ? 'bg-blue-600 text-white'
+                         ? 'bg-black text-white'
                          : day.isToday
-                         ? 'border border-blue-600'
+                         ? 'border border-black'
                          : 'hover:bg-gray-100'
                      }`"
                 @click="!day.disabled && selectDate(day.date)"
@@ -218,18 +220,18 @@
         <!-- Кнопки навигации -->
         <div class="flex justify-between items-center pt-4">
           <button @click="prevStep" class="text-gray-500 hover:text-gray-700">
-            Назад
+            {{ $t("buttons.back") }}
           </button>
           <button
             :disabled="!isStep1Valid"
             @click="nextStep"
             :class="`px-4 py-2 rounded-lg font-medium transition-colors ${
               isStep1Valid
-                ? 'bg-blue-600 text-white hover:bg-blue-700'
+                ? 'bg-gray-900 text-white hover:bg-gray-950'
                 : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`"
           >
-            Далее
+            {{ $t("buttons.next") }}
           </button>
         </div>
       </div>
@@ -237,7 +239,7 @@
       <div v-else-if="step === 3" class="space-y-4">
         <!-- Выбор времени -->
         <div>
-          <label class="block mb-2 font-medium">Выберите время</label>
+          <label class="block mb-2 font-medium">{{ $t("select_time") }}</label>
           <div class="grid grid-cols-4 gap-2">
             <button
               v-for="time in availableTimes"
@@ -245,7 +247,7 @@
               :class="`py-2 px-3 border rounded text-sm font-medium
                       ${
                         selectedTime === time
-                          ? 'bg-blue-600 text-white border-blue-600'
+                          ? 'bg-black text-white border-black'
                           : 'hover:bg-gray-50'
                       }`"
               @click="selectTime(time)"
@@ -257,7 +259,7 @@
 
         <!-- Количество гостей -->
         <div>
-          <label class="block mb-2 font-medium">Количество гостей</label>
+          <label class="block mb-2 font-medium">{{ $t("guest_count") }}</label>
           <div class="flex items-center border rounded-lg overflow-hidden">
             <button
               @click="decrementGuests"
@@ -311,24 +313,24 @@
               </svg>
             </button>
           </div>
-          <p class="text-sm text-gray-500 mt-1">Максимум 10 гостей</p>
+          <p class="text-sm text-gray-500 mt-1">{{ $t("max_guests") }}</p>
         </div>
 
         <!-- Кнопки навигации -->
         <div class="flex justify-between items-center pt-4">
           <button @click="prevStep" class="text-gray-500 hover:text-gray-700">
-            Назад
+            {{ $t("buttons.back") }}
           </button>
           <button
             :disabled="!isStep1Valid"
             @click="nextStep"
             :class="`px-4 py-2 rounded-lg font-medium transition-colors ${
               isStep1Valid
-                ? 'bg-blue-600 text-white hover:bg-blue-700'
+                ? 'bg-gray-900 text-white hover:bg-gray-950'
                 : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`"
           >
-            Далее
+            {{ $t("buttons.next") }}
           </button>
         </div>
       </div>
@@ -336,74 +338,75 @@
       <!-- Шаг 4: Выбор блюд -->
       <div v-else-if="step === 4">
         <div class="mb-4">
-          <label class="block mb-2 font-medium"
-            >Выберите хотя бы одно блюдо</label
-          >
-          <div class="space-y-3">
+          <label class="block mb-2 font-medium text-lg">{{
+            $t("select_dish")
+          }}</label>
+          <div class="space-y-4">
             <div
               v-for="dish in dishes"
               :key="dish.id"
-              :class="`flex justify-between items-center border rounded-lg p-3 transition-colors ${
+              :class="`flex justify-between items-center border rounded-lg p-4 transition-colors ${
                 selectedDishes.includes(dish)
-                  ? 'border-blue-600 bg-blue-50'
+                  ? 'border-black bg-gray-100'
                   : 'hover:bg-gray-50'
               }`"
             >
-              <div class="flex items-center gap-3">
-                <div
-                  class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-6 w-6 text-gray-400"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                    />
-                  </svg>
+              <div class="flex items-center gap-4 flex-1">
+                <!-- Изображение блюда -->
+                <div class="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
+                  <img
+                    :src="dish.image || '/api/placeholder/200/200'"
+                    :alt="getLocalized(dish, 'name')"
+                    class="w-full h-full object-cover"
+                  />
                 </div>
-                <div>
-                  <h4 class="font-medium">{{ getLocalized(dish, "name") }}</h4>
-                  <p class="text-sm text-gray-500">
+
+                <!-- Информация о блюде -->
+                <div class="flex-1">
+                  <h4 class="font-medium text-lg">
+                    {{ getLocalized(dish, "name") }}
+                  </h4>
+                  <p class="text-sm text-gray-600 mt-1">
                     {{ getLocalized(dish, "description") || "Нет описания" }}
                   </p>
-                  <div class="text-end">{{ dish.price }}</div>
+                  <div class="text-lg font-medium text-gray-800 mt-2">
+                    {{ dish.price }} ₸
+                  </div>
                 </div>
               </div>
+
+              <!-- Кнопка добавления/удаления -->
               <button
                 @click="toggleDish(dish)"
-                :class="`text-sm px-3 py-1 rounded-lg font-medium ${
+                :class="`ml-4 px-4 py-2 rounded-lg font-medium transition-colors ${
                   selectedDishes.includes(dish)
-                    ? 'bg-blue-600 text-white'
-                    : 'border border-blue-600 text-blue-600'
+                    ? 'bg-black text-white hover:bg-gray-900'
+                    : 'border border-black text-black hover:bg-gray-100'
                 }`"
               >
-                {{ selectedDishes.includes(dish) ? "Убрать" : "Добавить" }}
+                {{ selectedDishes.includes(dish) ? $t("remove") : $t("add") }}
               </button>
             </div>
           </div>
         </div>
 
-        <div class="flex justify-between items-center pt-4">
-          <button @click="prevStep" class="text-gray-500 hover:text-gray-700">
-            Назад
+        <div class="flex justify-between items-center pt-4 mt-6">
+          <button
+            @click="prevStep"
+            class="text-gray-500 hover:text-gray-700 font-medium"
+          >
+            {{ $t("buttons.back") }}
           </button>
           <button
             :disabled="selectedDishes.length === 0"
             @click="nextStep"
-            :class="`px-4 py-2 rounded-lg font-medium transition-colors ${
+            :class="`px-6 py-2 rounded-lg font-medium transition-colors ${
               selectedDishes.length > 0
-                ? 'bg-blue-600 text-white hover:bg-blue-700'
+                ? 'bg-black text-white hover:bg-gray-900'
                 : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`"
           >
-            Далее
+            {{ $t("buttons.next") }}
           </button>
         </div>
       </div>
@@ -411,16 +414,18 @@
       <!-- Шаг 5: Подтверждение -->
       <div v-else-if="step === 5">
         <div class="bg-gray-50 p-4 rounded-lg mb-4">
-          <h3 class="text-xl font-semibold mb-4">Детали бронирования</h3>
+          <h3 class="text-xl font-semibold mb-4">
+            {{ $t("booking_details") }}
+          </h3>
 
           <div class="space-y-3">
             <div class="flex items-start">
               <div
-                class="min-w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3"
+                class="min-w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-3"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5 text-blue-600"
+                  class="h-5 w-5 text-black"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -434,7 +439,7 @@
                 </svg>
               </div>
               <div>
-                <div class="font-medium">Ресторан</div>
+                <div class="font-medium">{{ $t("restaurant") }}</div>
                 <div class="text-gray-600">
                   {{ selectedRestaurant ? selectedRestaurant.name : "—" }}
                 </div>
@@ -446,11 +451,11 @@
 
             <div class="flex items-start">
               <div
-                class="min-w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3"
+                class="min-w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-3"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5 text-blue-600"
+                  class="h-5 w-5 text-black"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -464,7 +469,7 @@
                 </svg>
               </div>
               <div>
-                <div class="font-medium">Дата и время</div>
+                <div class="font-medium">{{ $t("date_time") }}</div>
                 <div class="text-gray-600">
                   {{ formatDate(selectedDate) }} {{ selectedTime }}
                 </div>
@@ -473,11 +478,11 @@
 
             <div class="flex items-start">
               <div
-                class="min-w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3"
+                class="min-w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-3"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5 text-blue-600"
+                  class="h-5 w-5 text-black"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -491,7 +496,7 @@
                 </svg>
               </div>
               <div>
-                <div class="font-medium">Количество гостей</div>
+                <div class="font-medium">{{ $t("guest_count") }}</div>
                 <div class="text-gray-600">
                   {{ form.guests }} {{ getGuestWord(form.guests) }}
                 </div>
@@ -500,11 +505,11 @@
 
             <div class="flex items-start">
               <div
-                class="min-w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3"
+                class="min-w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-3"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5 text-blue-600"
+                  class="h-5 w-5 text-black"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -518,7 +523,7 @@
                 </svg>
               </div>
               <div>
-                <div class="font-medium">Выбранные блюда</div>
+                <div class="font-medium">{{ $t("selected_dishes") }}</div>
                 <ul class="text-gray-600 mt-1">
                   <li
                     v-for="dish in selectedDishes"
@@ -536,23 +541,23 @@
 
         <div class="border-t pt-4 mt-4">
           <div class="flex justify-between mb-2">
-            <span class="font-medium">Предварительная сумма:</span>
+            <span class="font-medium">{{ $t("pre_total") }}</span>
             <span class="font-medium">{{ calculateTotal() }} ₸</span>
           </div>
           <p class="text-sm text-gray-500 mb-4">
-            Полная стоимость будет рассчитана после подтверждения бронирования
+            {{ $t("full_price_note") }}
           </p>
         </div>
 
         <div class="flex justify-between items-center pt-4">
           <button @click="prevStep" class="text-gray-500 hover:text-gray-700">
-            Назад
+            {{ $t("buttons.back") }}
           </button>
           <button
             @click="redirectToCheckout"
             class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-semibold transition-colors"
           >
-            Перейти к оплате
+            {{ $t("proceed_payment") }}
           </button>
         </div>
       </div>
@@ -568,19 +573,27 @@ useHead({
     },
   ],
 });
+
+const props = defineProps({
+  dishes: {
+    type: Array,
+    default: () => [],
+  },
+});
 import axios from "axios";
 import { ref, reactive, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 const { locale } = useI18n();
+const { t } = useI18n();
 const selectedDishes = ref([]);
 const step = ref(1);
 
 const stepTitles = [
-  "Выбор ресторана",
-  "Выбор даты",
-  "Время и гости",
-  "Выбор блюд",
-  "Подтверждение",
+  t("step_restaurant"),
+  t("step_date"),
+  t("step_time_guests"),
+  t("step_dishes"),
+  t("step_confirm"),
 ];
 
 // Данные для календаря
@@ -588,7 +601,15 @@ const currentDate = ref(new Date());
 const selectedDate = ref(new Date());
 const currentMonth = ref(new Date().getMonth());
 const currentYear = ref(new Date().getFullYear());
-const weekDays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
+const weekDays = [
+  t("weekdays.mon"),
+  t("weekdays.tue"),
+  t("weekdays.wed"),
+  t("weekdays.thu"),
+  t("weekdays.fri"),
+  t("weekdays.sat"),
+  t("weekdays.sun"),
+];
 const selectedTime = ref(null);
 
 // Доступные времена для бронирования
@@ -625,18 +646,18 @@ const form = reactive({
 // Вычисляемое свойство для текущего месяца в текстовом виде
 const currentMonthName = computed(() => {
   const months = [
-    "Январь",
-    "Февраль",
-    "Март",
-    "Апрель",
-    "Май",
-    "Июнь",
-    "Июль",
-    "Август",
-    "Сентябрь",
-    "Октябрь",
-    "Ноябрь",
-    "Декабрь",
+    t("months.jan"),
+    t("months.feb"),
+    t("months.mar"),
+    t("months.apr"),
+    t("months.may"),
+    t("months.jun"),
+    t("months.jul"),
+    t("months.aug"),
+    t("months.sep"),
+    t("months.oct"),
+    t("months.nov"),
+    t("months.dec"),
   ];
   return months[currentMonth.value];
 });
@@ -818,13 +839,18 @@ function getLocalized(item, field) {
   const lang = locale.value ? locale.value.toLowerCase() : "ru";
   return item[`${field}_${lang}`] || item[`${field}_ru`]; // fallback to ru
 }
-
+import dayjs from "dayjs";
+import "dayjs/locale/kk";
+let locale_kz = "ru";
+if (locale.value == "KZ") {
+  locale_kz = "kk";
+}
 // Форматирование даты
 const formatDate = (date) => {
   if (!date) return "";
 
   const options = { day: "numeric", month: "long", year: "numeric" };
-  return date.toLocaleDateString("ru-RU", options);
+  return dayjs(date).locale(locale_kz).format("D MMMM YYYY");
 };
 
 // Склонение слова "гость"
@@ -833,14 +859,14 @@ const getGuestWord = (count) => {
   const lastTwoDigits = count % 100;
 
   if (lastDigit === 1 && lastTwoDigits !== 11) {
-    return "гость";
+    return t("guest.singular");
   } else if (
     [2, 3, 4].includes(lastDigit) &&
     ![12, 13, 14].includes(lastTwoDigits)
   ) {
-    return "гостя";
+    return t("guest.dual");
   } else {
-    return "гостей";
+    return t("guest.plural");
   }
 };
 
