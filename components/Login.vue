@@ -81,7 +81,7 @@
         <div class="flex items-center mx-auto gap-3">
           <div
             class="flex gap-5 items-center bg-black rounded-[9px] py-3 px-10"
-            @click="loginWithGoogle"
+            @click="openGoogleAuth"
           >
             <img src="../assets/google_icon.svg" alt="" />
             <div class="text-white">{{ $t("login_google") }}</div>
@@ -108,7 +108,7 @@
 
 <script setup>
 import { ref } from "vue";
-import axios from "axios";
+const config = useRuntimeConfig();
 const emit = defineEmits(["closeLoginModal", "toggleToRegister"]);
 const phone_number = ref("");
 const password = ref("");
@@ -116,6 +116,7 @@ const validationErrors = ref({});
 const authStore = useAuthStore();
 const error = ref(null);
 const success = ref(false);
+const router = useRouter();
 
 const signin = async () => {
   error.value = null;
@@ -140,9 +141,42 @@ const signin = async () => {
     }
   }
 };
+const GOOGLE_SCOPES = config.public.GOOGLE_SCOPES;
+const GOOGLE_AUTH_URI = config.public.GOOGLE_AUTH_URI;
+const GOOGLE_REDIRECT_URI = config.public.GOOGLE_REDIRECT_URI;
+const GOOGLE_CLIENT_ID = config.public.GOOGLE_CLIENT_ID;
 
-const loginWithGoogle = () => {
-  window.location.href =
-    "http://localhost:8000/api/v1/users/accounts/google/login/callback";
+const uri = `${GOOGLE_AUTH_URI}?redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&client_id=${GOOGLE_CLIENT_ID}&scope=${GOOGLE_SCOPES}`;
+
+const openGoogleAuth = async () => {
+  await navigateTo(`${uri}`, {
+    open: {
+      target: "_blank",
+      windowFeatures: {
+        width: 700,
+        height: 900,
+      },
+    },
+  });
 };
+
+const handleMessage = async (event) => {
+  if (event.data && event.data.type === "GOOGLE_AUTH_SUCCESS") {
+    // Fetch user profile when we get successful auth message
+    await authStore.fetchUserProfile();
+    emit("closeLoginModal");
+    router.go(0);
+    console.log("handleMessage");
+  } else if (event.data && event.data.type === "GOOGLE_AUTH_ERROR") {
+    console.error("Google authentication failed");
+  }
+};
+
+onMounted(() => {
+  window.addEventListener("message", handleMessage);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("message", handleMessage);
+});
 </script>

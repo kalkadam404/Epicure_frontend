@@ -178,7 +178,7 @@
                 class="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-md transition-transform"
               >
                 <img
-                  :src="userStore.user.image_url"
+                  :src="userStore.user.image_url || def_ava"
                   alt="Профиль"
                   class="w-full h-full object-cover"
                 />
@@ -298,6 +298,7 @@ const isUserMenuOpen = ref(false);
 const isLanguageMenuOpen = ref(false);
 const { locale, locales, setLocale } = useI18n();
 import Notifications from "~/components/Notifications.vue";
+import def_ava from "../assets/ava_def.svg";
 
 const currentLanguage = computed({
   get: () => locale.value,
@@ -347,11 +348,9 @@ const handleEscKey = (event) => {
   }
 };
 
-onMounted(() => {
+onMounted(async () => {
   document.addEventListener("keydown", handleEscKey);
-  if (!userStore.user) {
-    // userStore.fetchUserProfile();
-  }
+  await userStore.fetchUserProfile();
 });
 
 onBeforeUnmount(() => {

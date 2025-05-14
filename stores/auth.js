@@ -85,6 +85,8 @@ export const useAuthStore = defineStore("auth", () => {
     email.value = "";
     username.value = "";
     phone_number.value = "";
+    user.value = {};
+    isLoggedIn.value = false;
     tokenJWTCookie.value = null;
   };
 
@@ -105,5 +107,6 @@ export const useAuthStore = defineStore("auth", () => {
     auth,
     logout,
     restoreSession,
+    fetchUserProfile,
   };
 });
