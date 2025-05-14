@@ -20,16 +20,14 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
-      apiBase: "https://starfish-app-obbt2.ondigitalocean.app",
+      apiBase: process.env.NUXT_PUBLIC_API_BASE,
       // google
-      GOOGLE_AUTH_URI: "https://accounts.google.com/o/oauth2/auth",
-      GOOGLE_TOKEN_URI: "https://accounts.google.com/o/oauth2/token",
-      GOOGLE_REDIRECT_URI: "http://localhost:3000/google-redirect",
-      GOOGLE_USER_INFO_URI: "https://www.googleapis.com/oauth2/v1/userinfo",
-      GOOGLE_SCOPES:
-        "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
-      GOOGLE_CLIENT_ID:
-        "817105455030-9g38nih55o1ir34693fq4gam5vph3sn3.apps.googleusercontent.com",
+      GOOGLE_AUTH_URI: process.env.GOOGLE_AUTH_URI,
+      GOOGLE_TOKEN_URI: process.env.GOOGLE_TOKEN_URI,
+      GOOGLE_REDIRECT_URI: process.env.GOOGLE_REDIRECT_URI,
+      GOOGLE_USER_INFO_URI: process.env.GOOGLE_USER_INFO_URI,
+      GOOGLE_SCOPES: process.env.GOOGLE_SCOPES,
+      GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     },
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     STRIPE_WEBHOOK_SECRET_KEY: process.env.STRIPE_WEBHOOK_SECRET_KEY,
