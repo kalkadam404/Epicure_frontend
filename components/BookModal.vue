@@ -915,7 +915,7 @@ const config = useRuntimeConfig();
 console.log("JWT Token:", tokenJWT.value);
 
 const redirectToCheckout = async () => {
-  const stripe = window.Stripe(config.public.STRIPE_PUBLISHABLE_KEY);
+  // const stripe = window.Stripe(config.public.STRIPE_PUBLISHABLE_KEY);
 
   try {
     const response = await axios.post(
