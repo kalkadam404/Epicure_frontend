@@ -10,6 +10,7 @@ const isBookModalOpen = ref(false);
 const isCityModalOpen = ref(false);
 const isDishInfoModalOpen = ref(false);
 const dishes = ref([]);
+const config = useRuntimeConfig();
 
 const currentCityId = ref(null);
 const citySelectionCallback = ref(null);
@@ -85,7 +86,7 @@ const handleReservationSubmit = (reservationData) => {
 const fetchDishes = async () => {
   try {
     const { data } = await axios.get(
-      "http://0.0.0.0:8000/api/v1/products/menu-items/"
+      `${config.public.apiBase}/api/v1/products/menu-items/`
     );
     dishes.value = data.results;
     console.log(dishes.value);

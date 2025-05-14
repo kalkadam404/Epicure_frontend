@@ -921,7 +921,7 @@ const redirectToCheckout = async () => {
     const response = await axios.post(
       `${config.public.apiBase}/api/v1/payments/checkout/`,
       {
-        reservation_id: 2,
+        reservation_id: 3,
       },
       {
         headers: {
