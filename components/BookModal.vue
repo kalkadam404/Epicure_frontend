@@ -542,7 +542,7 @@
         <div class="border-t pt-4 mt-4">
           <div class="flex justify-between mb-2">
             <span class="font-medium">{{ $t("pre_total") }}</span>
-            <span class="font-medium">{{ calculateTotal() }} ₸</span>
+            <span class="font-medium">{{ calculateTotal }} ₸</span>
           </div>
           <p class="text-sm text-gray-500 mb-4">
             {{ $t("full_price_note") }}
@@ -871,18 +871,16 @@ const getGuestWord = (count) => {
 };
 
 // Расчет предварительной стоимости (демо)
-const calculateTotal = () => {
-  // Демо расчет, в реальном приложении здесь будет настоящая логика
-  const basePrice = 1000; // Базовая стоимость бронирования
-  const dishPrice = 500; // Средняя стоимость блюда
-
-  return basePrice + selectedDishes.value.length * dishPrice;
-};
-
+// const calculateTotal = () => {};
+const calculateTotal = computed(() => {
+  return selectedDishes.value.reduce((sum, dish) => {
+    return sum + Number(dish.price || 0);
+  }, 0);
+});
 const fetchRestaurants = async () => {
   try {
     const { data } = await axios.get(
-      "http://localhost:8000/api/v1/restaurants/"
+      `${config.public.apiBase}/api/v1/restaurants/`
     );
     restaurants.value = data.results;
     console.log("restaurants", restaurants.value);
@@ -893,7 +891,7 @@ const fetchRestaurants = async () => {
 
 const fetchCities = async () => {
   try {
-    const { data } = await axios.get("http://localhost:8000/api/v1/cities/");
+    const { data } = await axios.get(`${config.public.apiBase}/api/v1/cities/`);
     cities.value = data.results;
     console.log("cities", cities.value);
   } catch (err) {
@@ -903,8 +901,9 @@ const fetchCities = async () => {
 
 const createReservation = async () => {
   try {
-    const data = await axios.post(
-      "http://localhost:8000/api/v1/room/reservations/"
+    const { data } = await axios.post(
+      `${config.public.apiBase}/api/v1/room/reservations/`,
+      {}
     );
   } catch (err) {
     console.log(err);
@@ -920,9 +919,9 @@ const redirectToCheckout = async () => {
 
   try {
     const response = await axios.post(
-      "http://localhost:8000/api/v1/payments/checkout/",
+      `${config.public.apiBase}/api/v1/payments/checkout/`,
       {
-        reservation_id: 1,
+        reservation_id: 2,
       },
       {
         headers: {

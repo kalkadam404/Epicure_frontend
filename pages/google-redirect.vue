@@ -9,7 +9,7 @@ const authenticateUserGoogle = async (code) => {
   console.log("authenticateUserGoogle()");
   try {
     const { data } = await axios.post(
-      "http://localhost:8000/api/v1/users/google/",
+      `${config.public.apiBase}/api/v1/users/google/`,
       {
         code: code,
       }

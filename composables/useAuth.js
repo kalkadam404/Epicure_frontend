@@ -1,4 +1,5 @@
 import axios from "axios";
+const config = useRuntimeConfig();
 
 export const useLogOutJWT = () => {
   const tokenJWTCookie = useCookie("token_jwt");
@@ -11,7 +12,7 @@ export const useRefreshToken = async (refresh) => {
 
   try {
     const response = await axios.post(
-      "http://localhost:8000/api/v1/users/token/refresh/",
+      `${config.public.apiBase}/api/v1/users/token/refresh/`,
       {
         refresh,
       }
@@ -32,7 +33,7 @@ export const useVerifyToken = async (access) => {
   try {
     const options = {};
     const response = await axios.post(
-      "http://localhost:8000/api/v1/users/token/verify/",
+      `${config.public.apiBase}/api/v1/users/token/verify/`,
       {
         token: access,
       }

@@ -141,7 +141,6 @@
 import { ref } from "vue";
 import { useAuthStore } from "../stores/auth";
 const validationErrors = ref({});
-const userStore = useUserStore();
 const authStore = useAuthStore();
 const emit = defineEmits([
   "closeRegisterModal",

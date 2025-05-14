@@ -106,13 +106,14 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
-import ell from "../assets/ellipse.svg";
+
 const emit = defineEmits(["closeCityModal", "citySelected"]);
 
 const cities = ref([]);
 const selectedCityId = ref(null);
 const isLoading = ref(false);
 const error = ref(null);
+const config = useRuntimeConfig();
 
 const props = defineProps({
   currentCityId: {
@@ -130,7 +131,7 @@ const fetchCities = async () => {
   isLoading.value = true;
   error.value = null;
   try {
-    const { data } = await axios.get("http://localhost:8000/api/v1/cities/");
+    const { data } = await axios.get(`${config.public.apiBase}/api/v1/cities/`);
     cities.value = data.results || data;
   } catch (err) {
     console.error("Ошибка загрузки городов:", err);

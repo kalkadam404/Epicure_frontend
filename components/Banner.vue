@@ -83,6 +83,7 @@ const isDragging = ref(false);
 const startX = ref(0);
 const autoplayInterval = ref(null);
 const transitionActive = ref(false);
+const config = useRuntimeConfig();
 const transitionStyle = computed(() =>
   transitionActive.value ? "transition-transform duration-500 ease-in-out" : ""
 );
@@ -90,7 +91,7 @@ const transitionStyle = computed(() =>
 const fetchBanners = async () => {
   try {
     const { data } = await axios.get(
-      "http://0.0.0.0:8000/api/v1/advertisements/banners/"
+      `${config.public.apiBase}/api/v1/advertisements/banners/`
     );
     banners.value = data;
     console.log(banners.value);

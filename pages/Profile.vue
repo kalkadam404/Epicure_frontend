@@ -30,7 +30,7 @@
                 class="w-32 h-32 rounded-full overflow-hidden border-4 border-gray-100 shadow-md"
               >
                 <img
-                  :src="user.image_url"
+                  :src="user.image_url || def_ava"
                   alt="Аватар пользователя"
                   class="w-full h-full object-cover"
                 />
@@ -589,6 +589,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
+import def_ava from "../assets/ava_def.svg";
 
 definePageMeta({
   middleware: ["auth-jwt"],
@@ -600,6 +601,7 @@ const user = ref({});
 const loading = ref(true);
 const tokenJWTCookie = useCookie("token_jwt");
 const error = ref(null);
+const config = useRuntimeConfig();
 
 // Вкладки для профиля
 const tabs = [
@@ -672,7 +674,7 @@ const fetchProfile = async () => {
     };
 
     const { data } = await axios.get(
-      "http://localhost:8000/api/v1/users/profile/me/",
+      `${config.public.apiBase}/api/v1/users/me/`,
       options
     );
 
@@ -687,7 +689,7 @@ const fetchProfile = async () => {
 
 const fetchCities = async () => {
   try {
-    const { data } = await axios.get("http://localhost:8000/api/v1/cities/");
+    const { data } = await axios.get(`${config.public.apiBase}/api/v1/cities/`);
     cities.value = data.results || data;
   } catch (err) {
     console.error("Ошибка при получении списка городов:", err);
@@ -726,7 +728,7 @@ const updateProfile = async () => {
     };
 
     const { data } = await axios.patch(
-      "http://localhost:8000/api/v1/users/profile/update_me/",
+      `${config.public.apiBase}/api/v1/users/profile/update_me/`,
       editedUser.value,
       options
     );
@@ -758,7 +760,7 @@ const uploadAvatar = async (event) => {
     };
 
     const { data } = await axios.post(
-      "http://localhost:8000/api/v1/users/profile/upload_photo/",
+      `${config.public.apiBase}/api/v1/users/profile/upload_photo/`,
       formData,
       options
     );
@@ -784,7 +786,8 @@ const changePassword = async () => {
     };
 
     await axios.post(
-      "http://localhost:8000/api/v1/users/profile/change_password/",
+      `${config.public.apiBase}/api/v1/users/profile/change_password/`,
+
       passwordData.value,
       options
     );

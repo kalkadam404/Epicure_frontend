@@ -2,7 +2,7 @@
 import axios from "axios";
 import { useI18n } from "vue-i18n";
 import { ref, inject, onMounted, computed } from "vue";
-
+const config = useRuntimeConfig();
 const { locale } = useI18n();
 const { openCityModal, cityModal } = inject("cityModal");
 
@@ -27,7 +27,7 @@ const fetchRestaurants = async (cityId = null) => {
   error.value = null;
 
   try {
-    let url = "http://localhost:8000/api/v1/restaurants/";
+    let url = `${config.public.apiBase}/api/v1/restaurants/`;
     if (cityId) {
       url += `?city=${cityId}`;
     }

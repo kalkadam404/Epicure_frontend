@@ -9,7 +9,7 @@ export const useAuthStore = defineStore("auth", () => {
   const phone_number = ref("");
   const user = ref({});
   const loading = ref(true);
-
+  const config = useRuntimeConfig();
   const tokenJWTCookie = useCookie("token_jwt");
 
   const isLoggedIn = computed(() => !!accessToken.value);
@@ -17,7 +17,7 @@ export const useAuthStore = defineStore("auth", () => {
   const signup = async (payload) => {
     try {
       const response = await axios.post(
-        "http://0.0.0.0:8000/api/v1/users/register/",
+        `${config.public.apiBase}/api/v1/users/register/`,
         payload
       );
       console.log(response.data);
@@ -31,7 +31,7 @@ export const useAuthStore = defineStore("auth", () => {
   const auth = async (payload) => {
     try {
       const { data } = await axios.post(
-        "http://0.0.0.0:8000/api/v1/users/token/obtain/",
+        `${config.public.apiBase}/api/v1/users/token/obtain/`,
         payload
       );
 
@@ -54,11 +54,14 @@ export const useAuthStore = defineStore("auth", () => {
   const fetchUserProfile = async () => {
     if (!accessToken.value) return;
     try {
-      const { data } = await axios.get("http://0.0.0.0:8000/api/v1/users/me/", {
-        headers: {
-          Authorization: `Bearer ${accessToken.value}`,
-        },
-      });
+      const { data } = await axios.get(
+        `${config.public.apiBase}/api/v1/users/me/`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken.value}`,
+          },
+        }
+      );
 
       user.value = data;
       email.value = data.email;

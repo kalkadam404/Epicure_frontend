@@ -2,7 +2,8 @@
 import me from "../assets/me.jpeg";
 import alzhik from "../assets/alzhik.jpg";
 import abu from "../assets/abu.jpg";
-import dauka from "../assets/dauka.jpg";
+import jony from "../assets/jony.jpg";
+import aslan from "../assets/aslan.jpg";
 const { t } = useI18n();
 const persons = [
   {
@@ -18,14 +19,20 @@ const persons = [
     about: t("our_team.description2"),
   },
   {
-    img: dauka,
-    name: "Дармен Дәулет",
+    img: abu,
+    name: "Қуатұлы Абуханифа",
+    job: t("our_team.designer"),
+    about: t("our_team.description4"),
+  },
+  {
+    img: aslan,
+    name: "Аслан Мустафаев",
     job: t("our_team.waiter"),
     about: t("our_team.description3"),
   },
   {
-    img: abu,
-    name: "Қуатұлы Абуханифа",
+    img: jony,
+    name: "Жәнібек Мырзаханов",
     job: t("our_team.designer"),
     about: t("our_team.description4"),
   },
@@ -58,15 +65,24 @@ const persons = [
       </div>
     </main>
     <div class="font-bold text-4xl">{{ $t("aboutUs.our_team") }}</div>
-    <div class="grid grid-cols-4 gap-8 mt-10 px-20" data-aos="fade-down">
-      <PersonCard
-        v-for="(person, index) in persons"
-        :key="index"
-        :img="person.img"
-        :name="person.name"
-        :job="person.job"
-        :about="person.about"
-      />
+    <div class="px-20 mt-10 space-y-10">
+      <!-- Первый ряд: 3 карточки -->
+      <div class="grid grid-cols-3 gap-8" data-aos="fade-down">
+        <PersonCard
+          v-for="(person, index) in persons.slice(0, 3)"
+          :key="'row1-' + index"
+          v-bind="person"
+        />
+      </div>
+
+      <!-- Второй ряд: 2 карточки по центру -->
+      <div class="flex justify-center gap-8" data-aos="fade-up">
+        <PersonCard
+          v-for="(person, index) in persons.slice(3)"
+          :key="'row2-' + index"
+          v-bind="person"
+        />
+      </div>
     </div>
     <div class="px-20 mb-10">
       <BonusAppPromo />

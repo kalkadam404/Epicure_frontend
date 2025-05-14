@@ -52,6 +52,7 @@ import { inject } from "vue";
 import axios from "axios";
 import { useI18n } from "vue-i18n";
 const { locale } = useI18n();
+const config = useRuntimeConfig();
 
 const { openDishInfoModal, selectedDish } = inject("dishInfoModal");
 const openDishModal = (dish) => {
@@ -66,7 +67,7 @@ const sectionRefs = ref([]);
 const fetchCategories = async () => {
   try {
     const { data } = await axios.get(
-      "http://0.0.0.0:8000/api/v1/products/menu-types/"
+      `${config.public.apiBase}/api/v1/products/menu-types/`
     );
     categories.value = data.results;
     console.log("categories", data);
@@ -78,7 +79,7 @@ const fetchCategories = async () => {
 const fetchDishes = async () => {
   try {
     const { data } = await axios.get(
-      "http://0.0.0.0:8000/api/v1/products/menu-items/"
+      `${config.public.apiBase}/api/v1/products/menu-items/`
     );
     console.log("dishes", data);
     dishList.value = data.results;

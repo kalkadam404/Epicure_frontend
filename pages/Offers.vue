@@ -5,11 +5,12 @@ import { useI18n } from "vue-i18n";
 const { locale } = useI18n();
 const offers = ref([]);
 const tokenJWT = useCookie("token_jwt");
+const config = useRuntimeConfig();
 
 const fetchOffers = async () => {
   try {
     const { data } = await axios.get(
-      "http://localhost:8000/api/v1/offers/offers/",
+      `${config.public.apiBase}/api/v1/offers/offers/`,
       {
         Authorization: `Bearer ${tokenJWT}`,
       }

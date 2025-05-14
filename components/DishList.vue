@@ -9,6 +9,7 @@ const openDishModal = (dish) => {
   selectedDish.value = dish;
   openDishInfoModal();
 };
+const config = useRuntimeConfig();
 const dishList = ref([]);
 const isLoading = ref(true);
 const error = ref(null);
@@ -24,7 +25,7 @@ const fetchDishes = async () => {
 
   try {
     const { data } = await axios.get(
-      "http://localhost:8000/api/v1/products/menu-items/popular/"
+      `${config.public.apiBase}/api/v1/products/menu-items/popular/`
     );
 
     dishList.value = data.results || data;
