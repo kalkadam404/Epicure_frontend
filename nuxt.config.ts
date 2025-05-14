@@ -20,7 +20,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
-      apiBase: process.env.NUXT_PUBLIC_API_BASE,
+      apiBase: "https://starfish-app-obbt2.ondigitalocean.app",
       // google
       GOOGLE_AUTH_URI: process.env.GOOGLE_AUTH_URI,
       GOOGLE_TOKEN_URI: process.env.GOOGLE_TOKEN_URI,
