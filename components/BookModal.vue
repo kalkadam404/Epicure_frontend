@@ -554,7 +554,7 @@
             {{ $t("buttons.back") }}
           </button>
           <button
-            @click="redirectToCheckout"
+            @click="createReservation"
             class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-semibold transition-colors"
           >
             {{ $t("proceed_payment") }}
@@ -587,6 +587,7 @@ const { locale } = useI18n();
 const { t } = useI18n();
 const selectedDishes = ref([]);
 const step = ref(1);
+const user = useAuthStore();
 
 const stepTitles = [
   t("step_restaurant"),
@@ -899,20 +900,44 @@ const fetchCities = async () => {
   }
 };
 
+const tokenJWT = useCookie("token_jwt");
+const config = useRuntimeConfig();
+console.log("JWT Token:", tokenJWT.value);
+
+const endtime = computed(() => {
+  if (!selectedTime.value) return null;
+  const [hours, minutes] = selectedTime.value.split(":").map(Number);
+  const endHours = hours + 1;
+  return `${String(endHours).padStart(2, "0")}:${minutes
+    .toString()
+    .padStart(2, "0")}:00`;
+});
+
 const createReservation = async () => {
   try {
     const { data } = await axios.post(
       `${config.public.apiBase}/api/v1/room/reservations/`,
-      {}
+      {
+        restaurant: selectedRestaurant.value?.id,
+        table: "382541dd-0f2b-44bb-8729-5538aa43f7b3",
+        reservation_date: form.datetime.split("T")[0],
+        start_time: selectedTime.value,
+        end_time: endtime.value,
+        guest_count: form.guests,
+        guest_name: user.username,
+        guest_phone: user.phone_number,
+        guest_email: user.email,
+        menu_items: selectedDishes.value.map((dish) => ({
+          menu_item: dish.id,
+          quantity: 1, // при необходимости изменить
+        })),
+      }
     );
+    console.log("user name", user.username);
   } catch (err) {
     console.log(err);
   }
 };
-
-const tokenJWT = useCookie("token_jwt");
-const config = useRuntimeConfig();
-console.log("JWT Token:", tokenJWT.value);
 
 const redirectToCheckout = async () => {
   // const stripe = window.Stripe(config.public.STRIPE_PUBLISHABLE_KEY);
