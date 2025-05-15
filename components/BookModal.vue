@@ -587,7 +587,7 @@ const { locale } = useI18n();
 const { t } = useI18n();
 const selectedDishes = ref([]);
 const step = ref(1);
-const user = useAuthStore();
+const userStore = useAuthStore();
 
 const stepTitles = [
   t("step_restaurant"),
@@ -913,40 +913,57 @@ const endtime = computed(() => {
     .padStart(2, "0")}:00`;
 });
 
+const tableId = ref("");
+
+const fetchTable = async () => {
+  try {
+    const { data } = await axios.get(
+      `${config.public.apiBase}/api/v1/room/restaurant/${selectedRestaurant.value?.id}/tables/`
+    );
+    tableId.value = data.sections?.[0]?.tables?.[0].uuid;
+    console.log("tableid", tableId.value);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const createReservation = async () => {
+  await fetchTable();
   try {
     const { data } = await axios.post(
       `${config.public.apiBase}/api/v1/room/reservations/`,
       {
         restaurant: selectedRestaurant.value?.id,
-        table: "382541dd-0f2b-44bb-8729-5538aa43f7b3",
+        table: tableId.value,
         reservation_date: form.datetime.split("T")[0],
         start_time: selectedTime.value,
         end_time: endtime.value,
         guest_count: form.guests,
-        guest_name: user.username,
-        guest_phone: user.phone_number,
-        guest_email: user.email,
+        guest_name: userStore.username,
+        guest_phone: userStore.phone_number,
+        guest_email: userStore.email,
         menu_items: selectedDishes.value.map((dish) => ({
           menu_item: dish.id,
           quantity: 1, // при необходимости изменить
         })),
       }
     );
-    console.log("user name", user.username);
+    const reservationId = data.id; // ⬅️ Тут получаешь ID
+    console.log("Reservation создан:", reservationId);
+    await redirectToCheckout(reservationId);
   } catch (err) {
     console.log(err);
   }
 };
 
-const redirectToCheckout = async () => {
+const redirectToCheckout = async (reservationId) => {
   // const stripe = window.Stripe(config.public.STRIPE_PUBLISHABLE_KEY);
 
   try {
     const response = await axios.post(
       `${config.public.apiBase}/api/v1/payments/checkout/`,
       {
-        reservation_id: 3,
+        reservation_id: reservationId,
       },
       {
         headers: {
@@ -978,14 +995,15 @@ const redirectToCheckout = async () => {
   }
 };
 
-onMounted(() => {
+onMounted(async () => {
   // Устанавливаем текущую дату как выбранную по умолчанию
   selectDate(new Date());
   // Устанавливаем время по умолчанию (первое доступное)
   if (availableTimes.length > 0) {
     selectTime(availableTimes[0]);
   }
-  fetchRestaurants();
-  fetchCities();
+  await fetchRestaurants();
+  await fetchCities();
+  await userStore.fetchUserProfile();
 });
 </script>
